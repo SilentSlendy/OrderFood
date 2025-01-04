@@ -59,7 +59,7 @@ namespace POS.ViewModels
         /// <summary>
         /// Hướng sắp xếp hiện tại.
         /// </summary>
-        private string _currentSortDirection = null;
+        private string _currentSortDirection;
 
         /// <summary>
         /// Khởi tạo ViewModel với việc lấy dữ liệu nhân viên từ database.
@@ -124,7 +124,7 @@ namespace POS.ViewModels
         }
 
         /// <summary>
-        /// Kho hàng được chọn từ giao diện.
+        /// Nhân viên được chọn từ giao diện.
         /// </summary>
         private Employee _selectedEmployee;
         public Employee SelectedEmployee
@@ -218,9 +218,9 @@ namespace POS.ViewModels
                 // Change sort direction
                 _currentSortDirection = _currentSortDirection switch
                 {
-                    null => "ASC",   
-                    "ASC" => "DESC", 
-                    "DESC" => null, 
+                    null => "ASC",
+                    "ASC" => "DESC",
+                    "DESC" => null,
                     _ => null
                 };
             }
