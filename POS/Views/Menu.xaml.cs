@@ -216,7 +216,94 @@ namespace POS.Views
             QuanlityBox.Value = 1;
         }
 
+        /// <summary>
+        /// Xử lý sự kiện khi người dùng chọn nút thêm món ăn
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ShowAddMenuDialog();
+            UploadImageButton_Click(sender, e);
+        }
 
+        /// <summary>
+        /// Hiển thị dialog thêm món ăn.
+        /// </summary>
+        private void ShowAddMenuDialog()
+        {
+            // Reset dialog fields
+            ProductIDTextBox.Text = "";
+            NameTextBox.Text = "";
+            CategoryTextBox.Text = "";
+            PriceTextBox.Text = "";
+            DescriptionTextBox.Text = "";
+            ImagePathTextBox.Text = "";
+            StatusCheckBox.IsChecked = true;
+
+            _ = AddMenuDialog.ShowAsync();
+        }
+
+        /// <summary>
+        /// Hiển thị thông báo thêm món ăn thành công.
+        /// </summary>
+        private void ShowAddSuccessTeachingTip()
+        {
+            AddSuccessTeachingTip.IsOpen = true;
+
+            // Auto close after 3s
+            _ = Task.Delay(3000).ContinueWith(_ =>
+            {
+                DispatcherQueue.TryEnqueue(() => AddSuccessTeachingTip.IsOpen = false);
+            });
+        }
+
+        /// <summary>
+        /// Xử lý sự kiện khi người dùng chọn nút lưu món ăn.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private async void OnSaveMenu(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            int productID = int.Parse(ProductIDTextBox.Text);
+            string name = NameTextBox.Text;
+            string category = CategoryTextBox.Text;
+            int price = int.Parse(PriceTextBox.Text);
+            string description = DescriptionTextBox.Text;
+            string imagePath = ImagePathTextBox.Text;
+            bool status = StatusCheckBox.IsChecked ?? false;
+
+            var newMenu = new Menu
+            {
+                ProductID = productID,
+                Name = name,
+                Category = category,
+                Price = price,
+                Description = description,
+                ImagePath = imagePath,
+                Status = status
+            };
+
+    bool result = ViewModel.AddMenu(newMenu);
+            if (result)
+            {
+                ShowAddSuccessTeachingTip();
+                AddMenuDialog.Hide();
+            }
+            else
+            {
+                var errorDialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = "Không thể lưu món ăn. Vui lòng thử lại.",
+                    CloseButtonText = "OK",
+                    DefaultButton = ContentDialogButton.Close
+                };
+
+                await errorDialog.ShowAsync();
+                args.Cancel = true;
+            }
+        }
         //Dialog
         //private async void AddProductButton_Click(object sender, RoutedEventArgs e)
         //{
@@ -244,6 +331,97 @@ namespace POS.Views
                 foreach (var item in cart.InvoiceDetailToCartItemObjects)
                 {
                     OrdersUserControl.AddToOrder(item.Product, item.Quantity, item.Note);
+                }
+            }
+        }
+    }
+}
+ /// <summary>
+        /// Xử lý sự kiện khi người dùng chọn nút thêm món ăn
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EditMenu(Menu menu)
+        {
+            ProductIDTextBox.Text = menu.ProductID.ToString();
+            NameTextBox.Text = menu.Name;
+            CategoryTextBox.Text = menu.Category;
+            PriceTextBox.Text = menu.Price.ToString();
+            DescriptionTextBox.Text = menu.Description;
+            ImagePathTextBox.Text = menu.ImagePath;
+            StatusCheckBox.IsChecked = menu.Status;
+
+            _ = EditMenuDialog.ShowAsync();
+            UploadImageButton_Click(null, null);
+        }
+
+        private async void OnSaveMenu(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            int productID = int.Parse(ProductIDTextBox.Text);
+            string name = NameTextBox.Text;
+            string category = CategoryTextBox.Text;
+            int price = int.Parse(PriceTextBox.Text);
+            string description = DescriptionTextBox.Text;
+            string imagePath = ImagePathTextBox.Text;
+            bool status = StatusCheckBox.IsChecked ?? false;
+
+            var editedMenu = new Menu
+            {
+                ProductID = productID,
+                Name = name,
+                Category = category,
+                Price = price,
+                Description = description,
+                ImagePath = imagePath,
+                Status = status
+            };
+
+            bool result = ViewModel.EditMenu(editedMenu);
+            if (result)
+            {
+                ShowEditSuccessTeachingTip();
+                EditMenuDialog.Hide();
+            }
+            else
+            {
+                var errorDialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = "Không thể lưu chỉnh sửa. Vui lòng thử lại.",
+                    CloseButtonText = "OK",
+                    DefaultButton = ContentDialogButton.Close
+                };
+
+                await errorDialog.ShowAsync();
+                args.Cancel = true;
+            }
+        }
+
+        /// <summary>
+        /// Xử lý sự kiện khi người dùng chọn ảnh
+        /// </summary>
+        private async void UploadImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            var picker = new FileOpenPicker();
+            picker.ViewMode = PickerViewMode.Thumbnail;
+            picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            picker.FileTypeFilter.Add(".jpg");
+            picker.FileTypeFilter.Add(".jpeg");
+            picker.FileTypeFilter.Add(".png");
+
+            var file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                using (var stream = await file.OpenStreamForReadAsync())
+                {
+                    var bytes = new byte[stream.Length];
+                    await stream.ReadAsync(bytes, 0, (int)stream.Length);
+
+                    // Convert the byte array to a base64-encoded string
+                    var imagePath = Convert.ToBase64String(bytes);
+
+                    // Update the ImagePath property of the Menu object
+                    ImagePathTextBox.Text = imagePath;
                 }
             }
         }

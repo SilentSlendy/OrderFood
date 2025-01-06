@@ -113,9 +113,9 @@
                 <!--add, edit, remove-->
                 <!--Update later-->
                 <!--<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button Content="Thêm" Width="60" Height="40" Margin="20 0 20 0" HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}"/>
-                <Button Content="Xóa" Width="60" Height="40" Margin="0 0 20 0" HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}"/>
-                <Button Content="Sửa" Width="60" Height="40" Margin="0 0 20 0"  HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}"/>
+                <Button Click="AddMenu_Click" Content="Thêm" Width="60" Height="40" Margin="20 0 20 0" HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}"/>
+                <Button Click="DeleteMenu_Click" Content="Xóa" Width="60" Height="40" Margin="0 0 20 0" HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}"/>
+                <Button Click="EditMenu_Click" Content="Sửa" Width="60" Height="40" Margin="0 0 20 0"  HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}"/>
                 --><!--<Button Content="Thêm hóa đơn mới" Width="160" Height="40" HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}"/>--><!--
                 </StackPanel>-->
             </StackPanel>
