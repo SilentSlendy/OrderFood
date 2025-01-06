@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="POS.Views.Menu"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local1="using:POS.Views"
+    xmlns:local2="using:POS.ViewModels"
+    xmlns:local3="using:POS.Styles"
+    xmlns:uc="using:POS.Views.UserControls"
+    xmlns:local4="using:POS.Converters"
+    xmlns:models="using:POS.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <!-- Import Resources -->
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Styles/CustomStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converter -->
+            <local4:NumberToVnCurrencyConverter x:Key="currencyFormatter"/>
+            <local4:BoolToStatusProductConverter x:Key="statusFormatter"/>
+
+            <!-- Vertical Layout Template -->
+            <!--update later-->
+            <DataTemplate x:Key="VerticalLayout" x:DataType="models:Product">
+                <Border Height="100" Width="900" Margin="62 0 0 0" VerticalAlignment="Center" CornerRadius="40" Background="Wheat">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Width="100">
+                            <Image Source="{x:Bind ImagePath}" Stretch="Fill"/>
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="{x:Bind Name}" FontSize="20" Foreground="Black" Margin="20 0 0 0" Padding="35"/>
+                        <TextBlock Grid.Column="2" Text="{x:Bind Price, Converter={StaticResource currencyFormatter}}" FontSize="20" Foreground="Black" Margin="0 0 20 0" Padding="35" HorizontalAlignment="Right"/>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+            <SolidColorBrush 
+                        x:Key="SystemControlPageBackgroundBaseMediumBrush" 
+                        Color="#99000000"
+                        />
+        </ResourceDictionary>
+    </Page.Resources>
+
+
+    <Grid Background="Beige">
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="10*" />
+            <ColumnDefinition Width="3*" />
+
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <!--mid side-->
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
+            <!--head-->
+            <StackPanel Orientation="Horizontal" BorderBrush="BurlyWood" Margin="20">
+                <!--search bar-->
+                <AutoSuggestBox 
+                    x:Name="SearchBox"
+                    PlaceholderText="Tìm kiếm" 
+                    FontSize="12" 
+                    Width="360"  
+                    Height="40" 
+                    Margin="60 0 40 0" 
+                    VerticalContentAlignment="Center" 
+                    Background="BurlyWood" 
+                    QueryIcon="Find" 
+                    QuerySubmitted="AutoSuggestBox_QuerySubmitted"/>
+
+                <!--category-->
+                <Button Name ="CategoryCombobox" Width="60" Height="40" Margin="20 0" ToolTipService.ToolTip="Chọn danh mục" AutomationProperties.Name="Category" Foreground="Black" Background="BurlyWood" Style="{StaticResource CustomButtonStyle}">
+                    <SymbolIcon Symbol="Filter"/>
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="Tất cả" Click="MenuFlyoutItem_Click" Tag=""/>
+                            <MenuFlyoutItem Text="Khai vị" Click="MenuFlyoutItem_Click" Tag="Khai vị"/>
+                            <MenuFlyoutItem Text="Món chính" Click="MenuFlyoutItem_Click" Tag="Món chính"/>
+                            <MenuFlyoutItem Text="Tráng miệng" Click="MenuFlyoutItem_Click" Tag="Tráng miệng"/>
+                            <MenuFlyoutItem Text="Đồ uống" Click="MenuFlyoutItem_Click" Tag="Đồ uống"/>
+                            <MenuFlyoutItem Text="Đồ uống có cồn" Click="MenuFlyoutItem_Click" Tag="Đồ uống có cồn"/>
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+
+                <!--sort-->
+                <Button ToolTipService.ToolTip="Sắp xếp" Width="60" Height="40" AutomationProperties.Name="Sort" Foreground="Black" Background="BurlyWood" Style="{StaticResource CustomButtonStyle}">
+                    <SymbolIcon Symbol="Sort"/>
+                    <Button.Flyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="Mặc định" Click="Sort_Item_Click" Tag="0"/>
+                            <MenuFlyoutItem Text="Giá tăng dần" Click="Sort_Item_Click" Tag="1"/>
+                            <MenuFlyoutItem Text="Giá giảm dần" Click="Sort_Item_Click" Tag="2"/>
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+
+                <!--add, edit, remove-->
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Content="Thêm" Width="60" Height="40" Margin="20 0 20 0" HorizontalAlignment="Center" 
+                    Click="AddMenu_Click" Style="{StaticResource CustomButtonStyle}"/>
+                <Button Content="Xóa" Width="60" Height="40" Margin="0 0 20 0" HorizontalAlignment="Center"
+                    Click="DeleteMenu_Click" Style="{StaticResource CustomButtonStyle}"/>
+                <Button Content="Sửa" Width="60" Height="40" Margin="0 0 20 0" HorizontalAlignment="Center"
+                    Click="EditMenu_Click" Style="{StaticResource CustomButtonStyle}"/>
+                <!--<Button Content="Thêm hóa đơn mới" Width="160" Height="40" HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}"/>-->
+                </StackPanel>
+            </StackPanel>
+            
+            <!--items-->
+            <StackPanel Padding="50">
+                <!--list view-->
+                <ListBox Tapped="itemListBox_selectionChanged" VerticalAlignment="Center" HorizontalAlignment="Center" Name="itemsListBox" ItemsSource="{x:Bind ViewModel.Products, Mode=OneWay}" ItemTemplate="{StaticResource VerticalLayout}"  Background="Beige">
+                    <!--Style="{StaticResource CustomListBoxItemStyle}"-->
+                    <FlyoutBase.AttachedFlyout>
+
+                        <Flyout x:Name="CenteredFlyout" Placement="Full" LightDismissOverlayMode="On">
+                            <Flyout.FlyoutPresenterStyle>
+                                <Style TargetType="FlyoutPresenter">
+                                    <Setter Property="CornerRadius" Value="10"/>
+                                    <Setter Property="MinWidth" Value="700"/>
+                                    <Setter Property="MaxWidth" Value="700"/>
+                                    <Setter Property="MaxHeight" Value="500"/>
+                                    <Setter Property="MinHeight" Value="500"/>
+                                    <Setter Property="Padding" Value="30"/>
+                                </Style>
+                            </Flyout.FlyoutPresenterStyle>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0" Margin="0 0 20 0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel CornerRadius="10">
+                                    <Image Height="200" Width="200" Name="SelectedProductImage" Stretch="Uniform"/>
+                                    </StackPanel>
+                                    <NumberBox Grid.Row="1" Minimum="1" Value="1" 
+                                            HorizontalAlignment="Left"
+                                            SmallChange="1"
+                                            LargeChange="10"
+                                            Margin="0 20"
+                                            SpinButtonPlacementMode="Compact"
+                                            Width="100"
+                                            Name="QuanlityBox"/>
+                                    <Button Grid.Row="2" BorderBrush="Transparent" Background="#99ffcc" FontSize="20" Padding="30 10" Content="Đặt món" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                            Click="AddToBillClick"/>
+                                </Grid>
+
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="{x:Bind SelectedProduct.Name, Mode=OneWay}" FontSize="25" FontWeight="Bold" Foreground="Black" />
+                                    
+                                    <StackPanel Grid.Row="1" Margin="0 20 0 0">
+                                        <TextBlock Text="{x:Bind SelectedProduct.Description, Mode=OneWay}" FontSize="15" Foreground="Black"/>
+                                        <Border BorderThickness="0.5" BorderBrush="Gray" Opacity="0.5" Margin="0 20 0 20"></Border>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="2">
+                                        <TextBlock FontWeight="SemiBold" FontSize="20" Text="Tình trạng: " Margin="0 0 0 10"/>
+                                        <TextBlock Text="{x:Bind SelectedProduct.Status, Converter={StaticResource statusFormatter}, Mode=OneWay}" FontSize="15" Foreground="Black"/>
+                                        <Border BorderThickness="0.5" BorderBrush="Gray" Opacity="0.5" Margin="0 20 0 20"></Border>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="3">
+                                        <TextBlock FontWeight="SemiBold" FontSize="20" Text="Yêu cầu thêm: " Margin="0 0 0 10"/>
+                                        <TextBox Name="NoteTextBox" AcceptsReturn="True" Background="Transparent" BorderBrush="Black" BorderThickness="0 0 0 0.5">
+                                            
+                                        </TextBox>
+                                        <Border BorderThickness="0.5" BorderBrush="Gray" Opacity="0.5" Margin="0 20 0 20"></Border>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                        <TextBlock Text="Đơn giá: "/>
+                                        <TextBlock Text="{x:Bind SelectedProduct.Price, Converter={StaticResource currencyFormatter}, Mode=OneWay}" FontSize="30" Foreground="Black"/>
+                                    </StackPanel>
+                                </Grid>
+
+                            </Grid>
+                        </Flyout>
+                    </FlyoutBase.AttachedFlyout>
+                </ListBox>
+            </StackPanel>
+            
+
+           
+        </StackPanel>
+
+        <!--paging-->
+        <Grid Grid.Row="1" Grid.Column="0" >
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <TextBlock>
+             Tổng số món: <Run Text="{x:Bind ViewModel.TotalItems}"></Run>
+                </TextBlock>
+                <TextBlock>
+             Hiển thị: <Run Text="{x:Bind ViewModel.Products.Count, Mode=OneWay}"></Run>/<Run Text="{x:Bind ViewModel.RowsPerPage}"></Run>
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Name="previousButton" Width="80" Height="35" Content="&lt; Back" Click="previousButton_Click"/>
+                <!--combobox phân trang-->
+                <ComboBox Name="pagesComboBox" Width="100" Height="35" SelectionChanged="pagesComboBox_SelectionChanged" HorizontalAlignment="Center">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+
+                         <Run Text="{Binding Page}"/> / <Run Text="{Binding Total}"/>
+
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Name="nextButton" Width="80" Height="35" Content="Next &gt;" Click="nextButton_Click"/>
+            </StackPanel>
+        </Grid>
+        
+        <!--right side-->
+        <uc:OrdersUserControl Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" x:Name="OrdersUserControl" Margin="0 0 0 0"/>
+
+        <!--<ContentDialog
+            x:Name="ProductSelectDialog"
+            Title=""
+            PrimaryButtonText="Hủy"
+            SecondaryButtonText="Thêm vào Order"
+            PrimaryButtonClick="OrderDiaglogCancelClick"
+            SecondaryButtonClick="AddOrderClick"
+            CornerRadius="10"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch">
+            <DataTemplate x:DataType="models:Product">
+            <StackPanel Spacing="10" Padding="20" Orientation="Vertical">
+                <Image Source="{x:Bind ImagePath}" Stretch="Fill"/>
+                <TextBlock Text="{x:Bind Name}" FontSize="20" IsColorFontEnabled="True" Foreground="Red"/>
+                <TextBlock Text="{x:Bind Price, Converter={StaticResource currencyFormatter}}" FontSize="20"/>
+                <TextBlock Text="Số lượng:" FontSize="20"/>
+                    <NumberBox x:Name="QuantityNumberBox" Value="1" Minimum="1" SpinButtonPlacementMode="Inline" SmallChange="1" Width="100" Foreground="Black" Background="BurlyWood"/>
+                </StackPanel>
+            </DataTemplate>
+        </ContentDialog>-->
+
+
+    </Grid>
+    
+</Page>
