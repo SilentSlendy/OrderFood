@@ -41,6 +41,7 @@ namespace POS.ViewModels
         /// View model for settings
         /// </summary>
         private SettingsViewModel _settingsViewModel = new SettingsViewModel();
+        private OrderDetailViewModel _orderDetailViewModel = new OrderDetailViewModel();
         /// <summary>
         /// Mã hóa Feistel
         /// </summary>
@@ -62,10 +63,6 @@ namespace POS.ViewModels
         /// Phương thức thanh toán được chọn
         /// </summary>
         public string SelectedPaymentMethod { get; set; }
-        /// <summary>
-        /// Thuế VAT
-        /// </summary>
-        public float VAT { get; set; }
         /// <summary>
         /// Tổng tiền cần thanh toán
         /// </summary>
@@ -106,7 +103,7 @@ namespace POS.ViewModels
         /// <summary>
         /// Tổng tiền cần thanh toán sau khi đã tính thuế và giảm giá.
         /// </summary>
-        private float _vat;
+        private double _vat;
         /// <summary>
         /// Tổng tiền cần thanh toán
         /// </summary>
@@ -161,6 +158,23 @@ namespace POS.ViewModels
             OnPropertyChanged(nameof(TotalPayable));
             InvoiceId = invoiceID;
             CustomerID = customerId;
+        }
+
+        /// <summary>
+        /// Thuế 
+        /// </summary>
+        public double VAT
+        {
+            get => _vat;
+            set
+            {
+                if (_vat != value)
+                {
+                    _vat = value;
+                    OnPropertyChanged(nameof(VAT));
+                    CalculateTotalPayment();
+                }
+            }
         }
 
         /// <summary>
@@ -500,7 +514,7 @@ namespace POS.ViewModels
         /// <summary>
         /// Load các thiết lập cục bộ.
         /// </summary>
-        public void LoadLocalSettings()
+        public void GetValuesInLocalSettings()
         {
             VAT = _settingsViewModel.VAT;
             OnPropertyChanged(nameof(VAT));

@@ -63,9 +63,7 @@ namespace POS.Views
             ViewModel.AccessKey = AccessKeyPasswordBox.Password;
             ViewModel.SecretKey = SecretKeyPasswordBox.Password;
             ViewModel.IpnUrl = IpnUrlTextBox.Text;
-
-            ViewModel.PaymentLoadLocalSettings();
-
+            
             // Hiển thị thông báo lưu thành công
             ShowMessage("Vui lòng khởi động lại ứng dụng để cập nhật thông tin.");
         }

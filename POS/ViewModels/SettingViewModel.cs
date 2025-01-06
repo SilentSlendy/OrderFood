@@ -14,6 +14,10 @@ namespace POS.ViewModels
         /// </summary>
         private PaymentViewModel _paymentViewModel;
         /// <summary>
+        /// View model cho OrderDetail
+        /// </summary>
+        private OrderDetailViewModel _orderDetailViewModel;
+        /// <summary>
         /// Local settings
         /// </summary>
         private readonly ApplicationDataContainer _localSettings;
@@ -123,15 +127,6 @@ namespace POS.ViewModels
         private void SaveToLocalSetting(string key, object value)
         {
             _localSettings.Values[key] = value;
-        }
-
-        /// <summary>
-        /// Load local settings
-        /// </summary>
-        public void PaymentLoadLocalSettings()
-        {
-            _paymentViewModel = new PaymentViewModel();
-            _paymentViewModel.LoadLocalSettings();
         }
 
         /// <summary>
