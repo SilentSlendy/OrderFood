@@ -165,7 +165,8 @@ namespace POS.ViewModels
                 // Delete from the displayed list
                 Warehouses.Remove(warehouse);
                 OnPropertyChanged(nameof(Warehouses));
-
+                // Recall the data
+                LoadWarehouses(CurrentPage);
                 return true;
             }
             catch (Exception ex)

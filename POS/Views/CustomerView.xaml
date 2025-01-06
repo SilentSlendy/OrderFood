@@ -49,7 +49,6 @@
                     Height="40" 
                     Margin="8" 
                     VerticalContentAlignment="Center" 
-                    Background="BurlyWood" 
                     QueryIcon="Find"  
                     QuerySubmitted="AutoSuggestBox_QuerySubmitted"/>
             </StackPanel>
@@ -127,8 +126,8 @@
 
             x:Name="AddCustomerDialog"
             Title="Thêm khách hàng"
-            PrimaryButtonText="Hủy"
-            SecondaryButtonText="Lưu"
+            PrimaryButtonText="Lưu"
+            SecondaryButtonText="Hủy"
             PrimaryButtonClick="OnSaveCustomer"
             SecondaryButtonClick="OnCancelAddCustomer"
             CornerRadius="10"

@@ -175,6 +175,25 @@ namespace POS.Views
         /// <param name="args"></param>
         private async void OnSaveCustomer(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+            // Kiểm tra nếu người dùng chưa nhập tên khách hàng
+            if (string.IsNullOrEmpty(NameTextBox.Text))
+            {
+                var errorDialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = "Tên khách hàng không được để trống.",
+                    CloseButtonText = "OK",
+                    DefaultButton = ContentDialogButton.Close,
+                    XamlRoot = this.XamlRoot
+                };
+                // Close CreateDiscountDialog and show error dialog
+                AddCustomerDialog.Hide();
+                await errorDialog.ShowAsync();
+                args.Cancel = true;
+                return;
+            }
+
+
             string name = NameTextBox.Text;
             string phoneNumber = PhoneNumberTextBox.Text;
             string email = EmailTextBox.Text;

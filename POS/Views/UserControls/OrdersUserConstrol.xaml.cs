@@ -39,6 +39,7 @@ namespace POS.Views.UserControls
         {
             this.InitializeComponent();
             this.DataContext = ViewModel;
+            ViewModel.GetVATValue();
             CurrentEmployee = (Application.Current as App).CurrentEmployee;
         }
         private void SaveInvoice_Click(object sender, RoutedEventArgs e)

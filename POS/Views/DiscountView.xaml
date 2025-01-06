@@ -38,11 +38,11 @@
             <Button Content="Tạo mã giảm giá" Click="CreateDiscount_Click" 
                     FontSize="16" Width="200" Height="40"  Margin="0 20 60 0" 
                     HorizontalAlignment="Center" VerticalAlignment="Center" 
-                    Background="CornflowerBlue" Foreground="White"/>
+                    Foreground="Black"/>
             <Button Content="Xóa" Click="DeleteDiscount_Click"
                     FontSize="16" Width="200" Height="40"  Margin="0 20 0 0" 
                     HorizontalAlignment="Center" VerticalAlignment="Center" 
-                    Background="CornflowerBlue" Foreground="White"/>
+                    Foreground="Black"/>
         </StackPanel>
         
         <!-- header table -->

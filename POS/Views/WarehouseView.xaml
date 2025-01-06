@@ -51,8 +51,7 @@
          Width="400"  
          Height="40" 
          Margin="8" 
-         VerticalContentAlignment="Center" 
-         Background="BurlyWood" 
+         VerticalContentAlignment="Center"  
          QueryIcon="Find"  
          QuerySubmitted="AutoSuggestBox_QuerySubmitted"/>
                 </StackPanel>

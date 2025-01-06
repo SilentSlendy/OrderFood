@@ -15,6 +15,10 @@ namespace POS.ViewModels
     
     public class OrderDetailViewModel: INotifyPropertyChanged
     {
+        /// <summary>
+        /// View model for settings
+        /// </summary>
+        private SettingsViewModel _settingsViewModel = new SettingsViewModel();
         public event PropertyChangedEventHandler PropertyChanged;
         private IInvoiceDao _invoiceDao = new PostgresInvoiceDao();
         private ICustomerDao _customerDao = new PostgresCustomerDao();
@@ -25,6 +29,7 @@ namespace POS.ViewModels
         private double _subTotal;
         private double _total;
         private double _tax;
+        private double VAT;
         public int CustomerID { get; set; } = -1;
         public string CustomerName { get; set; }
         public void getCustomersListForAutoSuggest()
@@ -73,11 +78,16 @@ namespace POS.ViewModels
                 }
             }
         }
+
+        /// <summary>
+        /// ///////////////////
+        /// </summary>
+
         public double Tax
         {
             get
             {
-                return SubTotal * 0.1;
+                return SubTotal * VAT * 0.01; 
             }
             set
             {
@@ -153,6 +163,16 @@ namespace POS.ViewModels
                 _invoiceDetailDao.InsertInvoiceDetail(invoiceDetail);
             }
             return newInvoiceId;
+        }
+
+        /// <summary>
+        /// Cập nhật VAT sau khi setting they đổi
+        /// </summary>
+        /// <param name="value"></param>
+        public void GetVATValue()
+        {
+            VAT = _settingsViewModel.VAT;
+
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

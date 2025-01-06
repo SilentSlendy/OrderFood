@@ -32,7 +32,13 @@ namespace POS.Views
             this.InitializeComponent();
             ViewModel = (Application.Current as App).PaymentViewModel;
             this.DataContext = ViewModel;
-            ViewModel.LoadLocalSettings();
+            ViewModel.GetValuesInLocalSettings();
+            //ViewModel.initCount += 1;
+            //// Nếu lần đầu khởi tạo trang thì gán các giá trị cho ViewModel từ LocalSettings
+            //if (ViewModel.initCount == 1)
+            //{
+            //    ViewModel.LoadLocalSettings();
+            //}    
         }
 
         /// <summary>

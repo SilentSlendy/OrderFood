@@ -165,7 +165,8 @@ namespace POS.ViewModels
                 // Delete from the displayed list
                 Customers.Remove(customer);
                 OnPropertyChanged(nameof(Customers));
-
+                // Recall the data
+                LoadCustomers(CurrentPage);
                 return true;
             }
             catch (Exception ex)

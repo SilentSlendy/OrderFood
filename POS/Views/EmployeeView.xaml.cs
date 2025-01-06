@@ -175,6 +175,24 @@ namespace POS.Views
         /// <param name="args"></param>
         private async void OnSaveEmployee(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+            // Kiểm tra nếu người dùng chưa nhập tên, lương hoac ngày vào làm
+            if (string.IsNullOrEmpty(EmployeeNameTextBox.Text) || string.IsNullOrEmpty(SalaryTextBox.Text) || HireDateDatePicker.SelectedDate == null)
+            {
+                var errorDialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = "Vui lòng nhập tên nhân viên, lương và ngày vào làm.",
+                    CloseButtonText = "OK",
+                    DefaultButton = ContentDialogButton.Close,
+                    XamlRoot = this.XamlRoot
+                };
+                // Close CreateDiscountDialog and show error dialog
+                AddEmployeeDialog.Hide();
+                await errorDialog.ShowAsync();
+                args.Cancel = true;
+                return;
+            }
+
             string employeeName = EmployeeNameTextBox.Text;
             string position = PositionTextBox.Text;
             decimal salary = decimal.Parse(SalaryTextBox.Text);
