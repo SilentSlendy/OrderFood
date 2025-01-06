@@ -41,33 +41,29 @@
         <!--mid side-->
         <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
             <!--head-->
-            <StackPanel Orientation="Horizontal" Height="120" BorderBrush="BurlyWood" BorderThickness="0 0 0 2">
-                <!--search bar-->
-                <AutoSuggestBox 
-                    x:Name="SearchBox"
-                    PlaceholderText="Tìm kiếm" 
-                    FontSize="12" 
-                    Width="400"  
-                    Height="40" 
-                    Margin="75 0 120 0" 
-                    VerticalContentAlignment="Center" 
-                    Background="BurlyWood" 
-                    QueryIcon="Find"  
-                    QuerySubmitted="AutoSuggestBox_QuerySubmitted"/>
-
+            <Grid Margin="8">
+                <StackPanel Orientation="Horizontal" BorderBrush="BurlyWood" BorderThickness="0 0 0 2">
+                    <!--search bar-->
+                    <AutoSuggestBox 
+         x:Name="SearchBox"
+         PlaceholderText="Tìm kiếm" 
+         FontSize="12" 
+         Width="400"  
+         Height="40" 
+         Margin="8" 
+         VerticalContentAlignment="Center" 
+         Background="BurlyWood" 
+         QueryIcon="Find"  
+         QuerySubmitted="AutoSuggestBox_QuerySubmitted"/>
+                </StackPanel>
                 <!--add, remove btn-->
-                <Button Content="Thêm" Width="180" Height="40" Margin="430 0 40 0" HorizontalAlignment="Center" 
-                        Click="AddWarehouse_Click" Style="{StaticResource CustomButtonStyle}"/>
-                <Button Content="Xóa" Width="180" Height="40" HorizontalAlignment="Center"
-                        Click="DeleteWarehouse_Click" Style="{StaticResource CustomButtonStyle}"/>
-
-                <!--refresh btn-->
-                <!--<Button Width="40" Height="40" HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <FontIcon Glyph="&#xE72C;" />
-                    </StackPanel>
-                </Button>-->
-            </StackPanel>
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button  Margin="8" Content="Thêm" Width="180" Height="40" HorizontalAlignment="Center" 
+             Click="AddWarehouse_Click" Style="{StaticResource CustomButtonStyle}"/>
+                    <Button Margin="8" Content="Xóa" Width="180" Height="40" HorizontalAlignment="Center"
+             Click="DeleteWarehouse_Click" Style="{StaticResource CustomButtonStyle}"/>
+                </StackPanel>
+            </Grid>
 
             <!--items-->
 
@@ -78,7 +74,8 @@
                     x:Name="itemsDataGrid"
                     ItemsSource="{x:Bind ViewModel.Warehouses, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectedWarehouse, Mode=TwoWay}"
-                    Width="1350" Height="630"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
                     AutoGenerateColumns="False"
                     IsReadOnly="False"
                     Sorting="OnDataGridSorting">
@@ -176,7 +173,7 @@
 
                 <StackPanel Spacing="10" Padding="20">
                     <TextBox x:Name="IngredientNameTextBox" PlaceholderText="Tên nguyên liệu" Margin="0 5" />
-                    <TextBox x:Name="StockQuantityTextBox" PlaceholderText="Số lượng tồn" Margin="0 5" />
+                    <TextBox x:Name="StockQuantityTextBox" PlaceholderText="Số lượng tồn kho" Margin="0 5" />
                     <TextBox x:Name="UnitTextBox" PlaceholderText="Đơn vị tính" Margin="0 5" />
                     <DatePicker x:Name="EntryDatePicker" Header="Ngày nhập kho" Margin="0 5" />
                     <DatePicker x:Name="ExpirationDatePicker" Header="Ngày hết hạn" Margin="0 5" />

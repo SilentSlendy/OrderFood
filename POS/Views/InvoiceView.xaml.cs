@@ -16,6 +16,8 @@ using POS.ViewModels;
 using POS.Models;
 using System.Diagnostics;
 using POS.DTOs;
+using System.Collections.ObjectModel;
+using Windows.ApplicationModel.VoiceCommands;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -85,6 +87,12 @@ namespace POS.Views
             var gridview = sender as GridView;
             var wholeInvoice = gridview.SelectedItem as WholeInvoice;
             ViewModel.SelectedInvoice = wholeInvoice;
+
+            // Disable OrderMoreDishesButton and PayInvoiceButton if the invoice is paid
+            if (wholeInvoice != null)
+            {
+                OrderMoreDishesButton.IsEnabled = !wholeInvoice.IsPaid;
+            }
         }
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
@@ -92,6 +100,8 @@ namespace POS.Views
             ViewModel.LoadInvoices(1);
             UpdatePagingInfo_bootstrap();
         }
+        //================================================================================================
+        //Click handler
         private void OrderMoreDishes_Click(object sender, RoutedEventArgs e)
         {
             var wholeInvoice = ViewModel.SelectedInvoice;
@@ -100,6 +110,7 @@ namespace POS.Views
                 var cart = new InvoiceToOrderObject();
                  cart.InvoiceDetailToCartItemObjects= new List<InvoiceDetailToCartItemObject>();
                 cart.InvoiceId = wholeInvoice.Invoice.InvoiceID;
+                cart.CustomerId = wholeInvoice.Invoice.CustomerID;
                 foreach (var item in wholeInvoice.InvoiceDetailsWithProductInfo)
                 {
                     var product = item.ProductInfo;
@@ -117,5 +128,30 @@ namespace POS.Views
                 navigation.SetCurrentNavigationViewItemForMenuWithArgument(cart);
             }
         }
+
+        private void DeleteInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            var wholeinvoice = ViewModel.SelectedInvoice;
+            if (wholeinvoice != null)
+            {
+                ViewModel.DeleteInvoice();
+            }
+        }
+        //================================================================================================
+        private int CalculateTotalCost()
+        {
+            int totalCost = 0;
+            var wholeinvoice = ViewModel.SelectedInvoice;
+            if (wholeinvoice != null)
+            {
+                foreach (var item in wholeinvoice.InvoiceDetailsWithProductInfo)
+                {
+                    totalCost += item.InvoiceDetailProperty.Price * item.InvoiceDetailProperty.Quantity;
+                }
+            }
+            return totalCost;
+        }
+        //================================================================================================
+        
     }
 }

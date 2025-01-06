@@ -5,6 +5,18 @@
     <None Update="App.xaml">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="Views\ChangeAccountForManagerPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ChangeAccountPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\NotPaidInvoicesView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\SettingView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -12,12 +24,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\InvoiceView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="DetailProductWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Shell.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\UserControls\OrdersUserConstrol.xaml">
@@ -29,9 +35,6 @@
     <Page Update="Views\Menu.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <None Update="MainWindow.xaml">
-      <SubType>Designer</SubType>
-    </None>
     <None Update="Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>

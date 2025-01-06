@@ -6,28 +6,37 @@ using System.Linq;
 using POS.Services;
 using POS.Views;
 
-namespace POS
+namespace POS.Shells
 {
-    public sealed partial class Shell : Window, INavigation
+    public partial class Shell : Window, INavigation
     {
         private bool _navigatedFlag = false;
         public Shell()
         {
             this.InitializeComponent();
-            this.SizeChanged += Shell_SizeChanged;
-        }
-        //Navigate from top to left for NavigationView
-        private void Shell_SizeChanged(object sender, WindowSizeChangedEventArgs e)
+            if((Application.Current as App).CurrentEmployee != null)
             {
-                if (e.Size.Width > NavigationView.CompactModeThresholdWidth)
+                if ((Application.Current as App).CurrentEmployee?.Position != "Quản lý")
                 {
-                    NavigationView.PaneDisplayMode = NavigationViewPaneDisplayMode.Top;
-                }
-                else
-                {
-                    NavigationView.PaneDisplayMode = NavigationViewPaneDisplayMode.LeftCompact;
+                    DiscountMenuItem.Visibility = Visibility.Collapsed;
+                    EmployeeMenuItem.Visibility = Visibility.Collapsed;
+                    SettingMenuItem.Visibility = Visibility.Collapsed;
                 }
             }
+            //this.SizeChanged += Shell_SizeChanged;
+        }
+        //Navigate from top to left for NavigationView
+        //private void Shell_SizeChanged(object sender, WindowSizeChangedEventArgs e)
+        //    {
+        //        if (e.Size.Width > 1100)
+        //        {
+        //            NavigationView.PaneDisplayMode = NavigationViewPaneDisplayMode.Top;
+        //        }
+        //        else
+        //        {
+        //            NavigationView.PaneDisplayMode = NavigationViewPaneDisplayMode.LeftCompact;
+        //        }
+        //    }
 
 
         private void NavigationView_Loaded(object sender, RoutedEventArgs e)

@@ -19,24 +19,48 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using POS.Services;
+using POS.Shells;
+using POS.Helpers;
+using POS.Models;
+using POS.Login;
+using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using POS.Views;
 
 namespace POS
 {
 
     public partial class App : Application
     {
+        public byte[] aesKey { get; set; } 
         public App()
         {
             this.InitializeComponent();
+            aesKey = new byte[32]
+        {
+            0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF,
+            0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF,
+            0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF,
+            0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF
+        };  // 32 bytes
+            //AccountCreator.GenarateBase64AccountData("tien", "tien");
         }
-
+        public EmployeeDataForLogin CurrentEmployee { get; set; }
         public PaymentViewModel PaymentViewModel { get; set; } = new PaymentViewModel();
-        public INavigation navigate => m_window;
+        public INavigation navigate { get; set; }
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            m_window = new Shell();
+
+
+            m_window2 = new ShellWindow();
+            m_window2.Activate();
+            // Set the title for the app
+            m_window2.Title = "POS HCMUS";
+
+            //m_window = new Shell();
+            //navigate = m_window;
             //m_window.Activate();
-            m_window.Activate();
+
         }
 
         //protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
@@ -68,6 +92,7 @@ namespace POS
         //    throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         //}
 
-        internal Shell m_window;
+        internal Shell m_window { get; set; }
+        internal ShellWindow m_window2 { get; set; }
     }
 }

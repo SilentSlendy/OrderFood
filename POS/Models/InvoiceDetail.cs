@@ -2,6 +2,9 @@
 
 namespace POS.Models
 {
+    /// <summary>
+    /// InvoiceDetail class
+    /// </summary>
     public class InvoiceDetail: INotifyPropertyChanged
     {
         public int DetailID { get; set; }

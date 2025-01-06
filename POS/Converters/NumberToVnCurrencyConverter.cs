@@ -8,8 +8,19 @@ using Microsoft.UI.Xaml.Data;
 
 namespace POS.Converters
 {
+    /// <summary>
+    /// Chuyển đổi số sang tiền tệ Việt Nam
+    /// </summary>
     class NumberToVnCurrencyConverter : IValueConverter
     {
+        /// <summary>
+        /// Chuyển đổi số sang tiền tệ Việt Nam
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="language"></param>
+        /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             int number = (int)value;
@@ -18,6 +29,16 @@ namespace POS.Converters
 
             return formattedCurrency;
         }
+
+        /// <summary>
+        /// Chuyển đổi tiền tệ Việt Nam sang số
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="language"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             if (value is string strValue)

@@ -10,6 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -49,12 +50,9 @@
         <!--add, edit, remove-->
             <!--Update later-->
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="40 0 40 0">
-            <Button Content="Đặt thêm món" Margin="88 0 20 0" Padding="10" HorizontalAlignment="Center" Click="OrderMoreDishes_Click"/>
-            <Button Content="Xóa hóa đơn" Padding="8"  Margin="0 0 20 0" HorizontalAlignment="Center"/>
-            <Button Content="Thanh toán"  Padding="8" Margin="0 0 20 0" HorizontalAlignment="Center" Background="#99ffcc"/>
+            <Button Content="Đặt thêm món" x:Name="OrderMoreDishesButton" Margin="88 0 20 0" Padding="10" HorizontalAlignment="Center" Click="OrderMoreDishes_Click"/>
+            <Button Content="Xóa hóa đơn" Padding="8"  Margin="0 0 20 0" HorizontalAlignment="Center" Click="DeleteInvoice_Click"/>
             </StackPanel>
-        
-
         <GridView Grid.Row="1" ItemsSource="{x:Bind ViewModel.Invoices, Mode=OneWay}" HorizontalAlignment="Center" SelectionChanged="InvoiceSelectionChanged">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="model:WholeInvoice">

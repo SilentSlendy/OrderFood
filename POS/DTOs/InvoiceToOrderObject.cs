@@ -10,5 +10,6 @@ namespace POS.DTOs
     {
         public List<InvoiceDetailToCartItemObject> InvoiceDetailToCartItemObjects { get;set;}
         public int InvoiceId { get; set; }
+        public int CustomerId { get; set; } = -1;
     }
 }

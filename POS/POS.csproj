@@ -19,8 +19,8 @@
     <Content Remove="Assets\Image\pho_bo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="DetailProductWindow.xaml" />
     <None Remove="Styles\customStyles.xaml" />
+    <None Remove="ViewModels\AccountVerificationWindow.xaml" />
     <None Remove="Views\DiscountView.xaml" />
     <None Remove="Views\InvoiceView.xaml" />
     <None Remove="Views\Menu.xaml" />
@@ -43,7 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview2" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
 
     <PackageReference Include="Fody" Version="6.9.1">
@@ -59,7 +59,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
-    <PackageReference Include="Npgsql" Version="9.0.1" />
+    <PackageReference Include="Npgsql" Version="9.0.2" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="9.0.0" />
     <Manifest Include="$(ApplicationManifest)" />
@@ -85,6 +85,22 @@
     <None Update="Assets\Image\logo.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="ViewModels\AccountVerificationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\ChangeAccountForManagerPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ChangeAccountPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\AccountPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\NotPaidInvoicesView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\SettingView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -92,10 +108,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Views\InvoiceView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-
-    <Page Update="DetailProductWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
 

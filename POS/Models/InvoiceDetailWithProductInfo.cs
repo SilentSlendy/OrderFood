@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace POS.Models
 {
+    /// <summary>
+    /// InvoiceDetailWithProductInfo class
+    /// </summary>
     public class InvoiceDetailWithProductInfo: INotifyPropertyChanged
     {
         public InvoiceDetail InvoiceDetailProperty { get; set; }

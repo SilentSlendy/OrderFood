@@ -2,6 +2,9 @@
 
 namespace POS.Models
 {
+    /// <summary>
+    /// WorkShift Model
+    /// </summary>
     public class WorkShift
     {
         public int ShiftID { get; set; }

@@ -8,6 +8,7 @@ using System;
 using POS.Models;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Data;
+using POS.Shells;
 
 
 namespace POS.Views
@@ -174,6 +175,43 @@ namespace POS.Views
         /// <param name="args"></param>
         private async void OnSaveWarehouse(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+            // Kiểm tra nếu người dùng chưa nhập tên nguyên liệu hoặc số lượng tồn hoặc ngày nhập kho
+            if (string.IsNullOrEmpty(IngredientNameTextBox.Text) || string.IsNullOrEmpty(StockQuantityTextBox.Text) || EntryDatePicker.SelectedDate == null)
+            {
+                var errorDialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = "Vui lòng nhập tên nguyên liệu, số lượng tồn kho và ngày nhập kho.",
+                    CloseButtonText = "OK",
+                    DefaultButton = ContentDialogButton.Close,
+                    XamlRoot = this.XamlRoot
+                };
+                // Close CreateDiscountDialog and show error dialog
+                AddWarehouseDialog.Hide();
+                await errorDialog.ShowAsync();
+                args.Cancel = true;
+                return;
+            }
+
+            // Kiểm tra số lượng tồn là một số nguyên và lớn hơn 0
+            if (!int.TryParse(StockQuantityTextBox.Text, out int _stockQuantity) || _stockQuantity <= 0)
+            {
+                var errorDialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = "Số lượng tồn kho phải là một số nguyên lớn hơn 0.",
+                    CloseButtonText = "OK",
+                    DefaultButton = ContentDialogButton.Close,
+                    XamlRoot = this.XamlRoot
+                };
+                // Close CreateDiscountDialog and show error dialog
+                AddWarehouseDialog.Hide();
+                await errorDialog.ShowAsync();
+                args.Cancel = true;
+                return;
+            }
+
+
             string ingredientName = IngredientNameTextBox.Text;
             int stockQuantity = int.Parse(StockQuantityTextBox.Text);
             string unit = UnitTextBox.Text;

@@ -2,6 +2,9 @@
 
 namespace POS.Models
 {
+    /// <summary>
+    /// Discount model
+    /// </summary>
     public class Discount : INotifyPropertyChanged
     {
         public int DiscountId { get; set; }

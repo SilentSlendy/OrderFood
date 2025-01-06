@@ -18,6 +18,8 @@
         <ResourceDictionary>
             <local1:NumberToVnCurrencyConverter x:Key="CurrencyConverter"/>
             <local1:DoubleToVnCurrencyConverter x:Key="DoubleToCurrencyConverter"/>
+            <local1:InvoiceIDToParagraphConverter x:Key="InvoiceIDToParagraphConverter"/>
+            <local1:DateTimeToDateConverter x:Key="DateTimeToDateConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -57,6 +59,49 @@
             <NumberBox Grid.Column="1" Grid.Row="1" Value="1"  Minimum="1" SpinButtonPlacementMode="Inline" SmallChange="1" Width="100" Margin="0 0 20 0" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Black" Background="BurlyWood"/>
             <TextBlock Grid.Column="1" Grid.Row="2" Text="200.000 đ" FontSize="12"  Margin="0 0 10 0" Padding="15" HorizontalAlignment="Right" Foreground="Black"/>
         </Grid>-->
+        <StackPanel Grid.Row="0" Padding="8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" FontSize="20" FontWeight="Bold" Name="InvoiceID" Text="{x:Bind ViewModel.InvoiceID,Converter={StaticResource InvoiceIDToParagraphConverter},Mode=OneWay}"></TextBlock>
+                <TextBlock Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontWeight="SemiBold">Ngày: 
+            <Run Text="{x:Bind ViewModel.InvoiceDate, Converter={StaticResource DateTimeToDateConverter}}"></Run>
+            </TextBlock>
+            </Grid>
+            <TextBlock Margin=" 0 4 0 4">
+                Tên nhân viên: <Run Text="{x:Bind CurrentEmployee.Name}"/>
+            </TextBlock>
+            <StackPanel Orientation="Vertical" Margin=" 0 4 0 4">
+            <TextBlock>Tên khách hàng: </TextBlock>
+                <AutoSuggestBox PlaceholderText="Nhập tên khách hàng"
+                                Text="{x:Bind ViewModel.CustomerName,Mode=OneWay}"
+        TextChanged="AutoSuggestBox_TextChanged"
+        QueryIcon="Find"
+        QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+        SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                                Background="Transparent"
+                                BorderBrush="Transparent">
+                    <AutoSuggestBox.ItemTemplate>
+                        <DataTemplate x:DataType="model:Customer">
+                            <StackPanel>
+                                <TextBlock Text="{x:Bind Name}"/>
+                                <TextBlock Text="{x:Bind Address}"/>
+                                <TextBlock Text="{x:Bind PhoneNumber}"/>
+                                <TextBlock Text="{x:Bind Email}"/>
+                                <TextBlock>Khách hàng:
+                                <Run Text="{x:Bind CustomerType}"/>
+                                </TextBlock>
+                                <Border Height="1" Background="Gray" Margin="0,5"/>
+                            </StackPanel>
+
+                        </DataTemplate>
+                    </AutoSuggestBox.ItemTemplate>
+                </AutoSuggestBox>
+                <TextBlock x:Name="NoResultsText" Text="Không tìm thấy kết quả" Visibility="Collapsed" Margin="10"/>
+            </StackPanel>
+        </StackPanel>
         <ListView Grid.Row="1" ItemsSource="{x:Bind ViewModel.Items}" Background="#f8f8ea" BorderBrush="Beige" BorderThickness="0 5 0 5">
 
             <ListView.ItemTemplate>
@@ -100,7 +145,12 @@
                 </MenuFlyout>
             </AppBarButton.Flyout>
         </AppBarButton>-->
-        <StackPanel Grid.Row="2" Padding="10">
+        <Grid Grid.Row="2" Padding="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel>
             <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -113,6 +163,7 @@
                     <Run Text="{x:Bind ViewModel.SubTotal, Converter={StaticResource DoubleToCurrencyConverter}, Mode=OneWay}"/>
                 </TextBlock>
             </Grid>
+            
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -137,18 +188,23 @@
                     <Run Text="{x:Bind ViewModel.Total, Converter={StaticResource DoubleToCurrencyConverter}, Mode=OneWay}"/>
                 </TextBlock>
             </Grid>
-            <StackPanel Margin="15" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                <Button HorizontalContentAlignment="Stretch" CornerRadius="6" Content="Lưu hóa đơn" Height="40" HorizontalAlignment="Center" Click="SaveInvoice_Click"/>
-                <Button CornerRadius="6" Content="Thanh toán" Height="40" HorizontalAlignment="Center" Click="PayInvoice_Click"/>
             </StackPanel>
-            <Grid>
-            <TeachingTip
-         x:Name="SaveSuccessTeachingTip"
-         Subtitle="Hóa đơn đã được lưu thành công."
-         Background="LightBlue"
-         IsOpen="False"/>
+            <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" CornerRadius="6" Content="Lưu hóa đơn" Height="40" HorizontalAlignment="Stretch" Click="SaveInvoice_Click"/>
+                    <Button  Grid.Column="1" CornerRadius="6" Content="Thanh toán" Height="40" HorizontalAlignment="Stretch" Click="PayInvoice_Click"/>
             </Grid>
-        </StackPanel>
+            <Grid>
+                <TeachingTip
+                 x:Name="SaveSuccessTeachingTip"
+                 Subtitle="Hóa đơn đã được lưu thành công."
+                 Background="LightBlue"
+                 IsOpen="False"/>
+            </Grid>
+        </Grid>
         
     </Grid>
 </UserControl>

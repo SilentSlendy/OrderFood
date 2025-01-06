@@ -10,14 +10,25 @@ using Windows.Foundation.Collections;
 
 namespace POS
 {
+    /// <summary>
+    /// ObservableCollection mở rộng: Thêm sự kiện PropertyChanged cho từng phần tử
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public sealed class FullObservableCollection<T> : ObservableCollection<T>
         where T : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Khởi tạo một đối tượng FullObservableCollection
+        /// </summary>
         public FullObservableCollection()
         {
             CollectionChanged += FullObservableCollectionCollectionChanged;
         }
 
+        /// <summary>
+        /// Khởi tạo một đối tượng FullObservableCollection với một danh sách các phần tử
+        /// </summary>
+        /// <param name="pItems"></param>
         public FullObservableCollection(IEnumerable<T> pItems) : this()
         {
             foreach (var item in pItems)
@@ -26,6 +37,11 @@ namespace POS
             }
         }
 
+        /// <summary>
+        /// Sự kiện CollectionChanged của ObservableCollection
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FullObservableCollectionCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
@@ -44,6 +60,11 @@ namespace POS
             }
         }
 
+        /// <summary>
+        /// Sự kiện PropertyChanged của từng phần tử
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             //NotifyCollectionChangedEventArgs args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, sender, sender, IndexOf((T)sender));

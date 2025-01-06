@@ -3,13 +3,18 @@
     x:Class="POS.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:POS">
+    xmlns:local="using:POS"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls">
+
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-                <!-- Other merged dictionaries here -->
+                <!-- Ensure that the correct namespace for WinUI controls is declared -->
+                <muxc:XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Define your custom resources here -->
+            <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="Beige"/>
             <!-- Other app resources here -->
         </ResourceDictionary>
     </Application.Resources>

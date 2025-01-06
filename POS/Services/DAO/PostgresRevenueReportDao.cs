@@ -7,10 +7,22 @@ using POS.Helpers;
 
 namespace POS.Services.DAO
 {
+    /// <summary>
+    /// DAO cho các thao tác liên quan đến RevenueReport
+    /// </summary>
     public class PostgresRevenueReportDao : IRevenueReportDao
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PostgresRevenueReportDao() { }
 
+        /// <summary>
+        /// Lấy tất cả các báo cáo doanh thu
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rowsPerPage"></param>
+        /// <returns></returns>
         public Tuple<int, List<RevenueReport>> GetAllRevenueReports(int page, int rowsPerPage)
         {
             var reports = new List<RevenueReport>();
@@ -54,7 +66,11 @@ namespace POS.Services.DAO
             return new Tuple<int, List<RevenueReport>>(totalItems, reports);
         }
 
-        // Thêm báo cáo doanh thu mới
+        /// <summary>
+        /// Thêm báo cáo doanh thu mới
+        /// </summary>
+        /// <param name="revenueReport"></param>
+        /// <returns></returns>
         public int InsertRevenueReport(RevenueReport revenueReport)
         {
             int newId;
@@ -78,7 +94,11 @@ namespace POS.Services.DAO
             return newId;
         }
 
-        // Cập nhật thông tin báo cáo doanh thu
+        /// <summary>
+        /// Cập nhật báo cáo doanh thu
+        /// </summary>
+        /// <param name="revenueReport"></param>
+        /// <returns></returns>
         public bool UpdateRevenueReport(RevenueReport revenueReport)
         {
             int rowsAffected;
@@ -114,7 +134,10 @@ namespace POS.Services.DAO
             return rowsAffected > 0;
         }
 
-        // Xóa báo cáo doanh thu theo ID
+        /// <summary>
+        /// Xóa báo cáo doanh thu theo ID
+        /// </summary>
+        /// <param name="revenueReportId"></param>
         public void RemoveRevenueReportById(int revenueReportId)
         {
             using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))

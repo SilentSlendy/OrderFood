@@ -1,10 +1,10 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using POS;
+using POS.Views;
 
-namespace POS
+namespace POS.Shells
 {
-    public sealed partial class ShellWindow : Window
+    public partial class ShellWindow : Window
     {
         public ShellWindow()
         {

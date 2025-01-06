@@ -9,19 +9,44 @@ using POS.Helpers;
 
 namespace POS.ViewModels
 {
+    /// <summary>
+    /// ViewModel quản lý logic và dữ liệu của giao diện quản lý khuyến mãi.
+    /// </summary>
     public sealed partial class DiscountViewModel : INotifyPropertyChanged
     {
+        /// <summary>
+        /// DAO để thao tác với bảng khuyến mãi trong database.
+        /// </summary>
         private IDiscountDao _discountDao = new PostgresDiscountDao();
+        /// <summary>
+        /// Danh sách các khuyến mãi hiện tại.
+        /// </summary>
         public ObservableCollection<Discount> Discounts { get; private set; }
+        /// <summary>
+        /// Mã hóa và giải mã chuỗi.
+        /// </summary>
         private FeistelCipher _feistelCipher = new FeistelCipher(8, "winui3_discount_key");
 
-
+        /// <summary>
+        /// Trang hiện tại dùng để phân trang.
+        /// </summary>
         public int CurrentPage { get; set; } = 1;
+        /// <summary>
+        /// Số hàng hiển thị trên mỗi trang.
+        /// </summary>
         public int RowsPerPage { get; set; } = 10;
+        /// <summary>
+        /// Tổng số trang dùng để phân trang.
+        /// </summary>
         public int TotalPages { get; set; } = 0;
+        /// <summary>
+        /// Tổng số khuyến mãi.
+        /// </summary>
         public int TotalItems { get; set; } = 0;
 
-
+        /// <summary>
+        /// Giá trị của mã giảm giá.
+        /// </summary>
         private int _value;
         public int Value
         {
@@ -36,6 +61,9 @@ namespace POS.ViewModels
             }
         }
 
+        /// <summary>
+        /// Số lượng mã giảm giá cần tạo.
+        /// </summary>
         private int _quantity;
         public int Quantity
         {
@@ -50,6 +78,9 @@ namespace POS.ViewModels
             }
         }
 
+        /// <summary>
+        /// Mã giảm giá được chọn.
+        /// </summary>
         private Discount _selectedDiscount;
         public Discount SelectedDiscount
         {
@@ -64,12 +95,18 @@ namespace POS.ViewModels
             }
         }
 
+        /// <summary>
+        /// Khởi tạo ViewModel với việc lấy dữ liệu khuyến mãi từ database.
+        /// </summary>
         public DiscountViewModel()
         {
             Discounts = new ObservableCollection<Discount>();
             GetAllDiscount();
         }
 
+        /// <summary>
+        /// Lấy tất cả khuyến mãi từ database.
+        /// </summary>
         public void GetAllDiscount()
         {
             var (totalItems, discounts) = _discountDao.GetAllDiscount(CurrentPage, RowsPerPage);
@@ -87,6 +124,10 @@ namespace POS.ViewModels
             OnPropertyChanged(nameof(TotalPages));
         }
 
+        /// <summary>
+        /// Lấy dữ liệu khuyến mãi ở trang cụ thể.
+        /// </summary>
+        /// <param name="page"></param>
         public void LoadDiscounts(int page)
         {
             if (page >= 1 && page <= TotalPages)
@@ -97,7 +138,12 @@ namespace POS.ViewModels
             }
         }
 
-
+        /// <summary>
+        /// Tạo mã giảm giá.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
         public bool CreateDiscounts(int value, int quantity)
         {
             bool result = true;
@@ -116,6 +162,11 @@ namespace POS.ViewModels
             return result;
         }
 
+        /// <summary>
+        /// Xóa một mã giảm giá.
+        /// </summary>
+        /// <param name="discount"></param>
+        /// <returns></returns>
         public bool DeleteDiscount(Discount discount)
         {
             try

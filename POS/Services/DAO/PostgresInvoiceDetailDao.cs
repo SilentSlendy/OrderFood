@@ -7,10 +7,22 @@ using POS.Helpers;
 
 namespace POS.Services.DAO
 {
+    /// <summary>
+    /// DAO cho các thao tác liên quan đến InvoiceDetail
+    /// </summary>
     public class PostgresInvoiceDetailDao: IInvoiceDetailDao
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PostgresInvoiceDetailDao() { }
 
+        /// <summary>
+        /// Lấy tất cả các chi tiết hóa đơn
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rowsPerPage"></param>
+        /// <returns></returns>
         public Tuple<int, List<InvoiceDetail>> GetAllInvoiceDetails(int page, int rowsPerPage)
         {
             var invoiceDetails = new List<InvoiceDetail>();
@@ -56,7 +68,12 @@ namespace POS.Services.DAO
             return new Tuple<int, List<InvoiceDetail>>(totalRecords, invoiceDetails);
         }
 
-            public Tuple<int, List<InvoiceDetailWithProductInfo>> GetAllInvoiceDetailsWithProductInformation(int invoiceId)
+        /// <summary>
+        /// Lấy tất cả các chi tiết hóa đơn kèm thông tin sản phẩm
+        /// </summary>
+        /// <param name="invoiceId"></param>
+        /// <returns></returns>
+        public Tuple<int, List<InvoiceDetailWithProductInfo>> GetAllInvoiceDetailsWithProductInformation(int invoiceId)
             { 
 
             var invoiceDetailsWithProductInformation = new List<InvoiceDetailWithProductInfo>();
@@ -115,6 +132,11 @@ namespace POS.Services.DAO
             return new Tuple<int, List<InvoiceDetailWithProductInfo>>(totalRecords, invoiceDetailsWithProductInformation);
         }
 
+        /// <summary>
+        /// Lấy chi tiết hóa đơn theo ID
+        /// </summary>
+        /// <param name="invoiceDetail"></param>
+        /// <returns></returns>
         public int InsertInvoiceDetail(InvoiceDetail invoiceDetail)
         {
             int newId;
@@ -140,6 +162,11 @@ namespace POS.Services.DAO
             return newId;
         }
 
+        /// <summary>
+        /// Cập nhật thông tin chi tiết hóa đơn
+        /// </summary>
+        /// <param name="invoiceDetail"></param>
+        /// <returns></returns>
         public bool UpdateInvoiceDetail(InvoiceDetail invoiceDetail)
         {
             int rowsAffected;
@@ -177,6 +204,10 @@ namespace POS.Services.DAO
             return rowsAffected > 0;
         }
 
+        /// <summary>
+        /// Xóa một chi tiết hóa đơn theo ID
+        /// </summary>
+        /// <param name="detailId"></param>
         public void RemoveInvoiceDetailById(int detailId)
         {
             using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))

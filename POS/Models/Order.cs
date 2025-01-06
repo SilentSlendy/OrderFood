@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace POS.Models
 {
+    /// <summary>
+    /// Order class
+    /// </summary>
     public class Order : Product, INotifyPropertyChanged
     {
         private int _quantity;

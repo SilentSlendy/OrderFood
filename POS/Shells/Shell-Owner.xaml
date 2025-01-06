@@ -1,4 +1,4 @@
-﻿<Window x:Class="POS.Shell"
+﻿<Window x:Class="POS.Shells.Shell_Owner"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="using:POS"
@@ -36,7 +36,7 @@
                         IsBackButtonVisible="Collapsed" 
                         IsSettingsVisible="False"
                         Margin="0"
-                        PaneTitle="POS" PaneDisplayMode="Top" >
+                        PaneTitle="POS" PaneDisplayMode="LeftCompact">
             <NavigationView.Resources>
                 <!-- Custom colors -->
                 <SolidColorBrush x:Key="NavigationViewItemForeground" Color="Black"/>
@@ -46,54 +46,36 @@
                 <SolidColorBrush x:Key="NavigationViewItemForegroundPressed" Color="Red"/>
             </NavigationView.Resources>
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Menu"
-                                    Tag="POS.Views.Menu"
-                                    ToolTipService.ToolTip="Thực đơn"
-                                    Icon="Home">
-                </NavigationViewItem>
-
-                <NavigationViewItem Content="Hóa đơn"
-                                    Tag="POS.Views.InvoiceView"
-                                    ToolTipService.ToolTip="Hóa đơn"
-                                    Icon="Document">
-                </NavigationViewItem>
+                
                 <NavigationViewItem Content="Kho hàng"
                                     Tag="POS.Views.WarehouseView"
                                     ToolTipService.ToolTip="Kho hàng"
                                     Icon="AllApps">
                 </NavigationViewItem>
-                <NavigationViewItem Content="Thực đơn"
-                                    Tag="POS.Views.ThucDon"
+                <NavigationViewItem Content="Khách hàng"
+                                    Tag="POS.Views.CustomerView"
                                     ToolTipService.ToolTip=""
                                     Icon="Contact">
                 </NavigationViewItem>
                 <NavigationViewItem Content="Nhân viên"
-                                    Tag="POS.Views.NhanVien"
+                                    Tag="POS.Views.EmployeeView"
                                     ToolTipService.ToolTip=""
                                     Icon="PhoneBook">
                 </NavigationViewItem>
                 <NavigationViewItem Content="Báo cáo"
                                     Tag="POS.Views.BaoCao"
-                                    ToolTipService.ToolTip=""
-                                    Icon="Contact">
-                </NavigationViewItem>
-                <NavigationViewItem Content="Thanh toán"
-                                    Tag="POS.Views.PaymentView"
-                                    ToolTipService.ToolTip=""
-                                    Icon="Contact">
+                                    ToolTipService.ToolTip="">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE9F9;" />
+                    </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem Content="Mã giảm giá"
-                    Tag="POS.Views.DiscountView"
-                    ToolTipService.ToolTip=""
-                    Icon="Contact">
-                </NavigationViewItem>
                 <!--//////////////////////////////////////////-->
 
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem Content="Tài khoản"
-                                    Tag="POS.ChangeAccountPage"
+                                    Tag="POS.AccountPage"
                                     ToolTipService.ToolTip=""
                                     Icon="Account"
 

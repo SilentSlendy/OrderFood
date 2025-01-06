@@ -9,6 +9,9 @@ using System.Security.Cryptography;
 
 namespace POS.Helpers
 {
+    /// <summary>
+    /// Mã hóa Feistel: Mã hóa một số nguyên thành một chuỗi Base62
+    /// </summary>
     public class FeistelCipher
     {
         private int _rounds;  // Số vòng mã hóa
@@ -16,12 +19,23 @@ namespace POS.Helpers
 
         private const string Base62Chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
+        /// <summary>
+        /// Khởi tạo một đối tượng mã hóa Feistel
+        /// </summary>
+        /// <param name="rounds"></param>
+        /// <param name="key"></param>
         public FeistelCipher(int rounds, string key)
         {
             _rounds = rounds;
             _subkeys = GenerateSubkeys(key, rounds);
         }
 
+        /// <summary>
+        /// Sinh khóa con từ khóa chính
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="rounds"></param>
+        /// <returns></returns>
         private int[] GenerateSubkeys(string key, int rounds)
         {
             // Sinh khóa con từ khóa chính
@@ -39,12 +53,23 @@ namespace POS.Helpers
             return subkeys;
         }
 
+        /// <summary>
+        /// Hàm vòng F: dùng XOR với subkey + hash cơ bản
+        /// </summary>
+        /// <param name="right"></param>
+        /// <param name="subkey"></param>
+        /// <returns></returns>
         private int RoundFunction(int right, int subkey)
         {
             // Hàm vòng F: dùng XOR với subkey + hash cơ bản
             return (right ^ subkey) & 0xFFFF;
         }
 
+        /// <summary>
+        /// Mã hóa một số nguyên thành chuỗi Base62
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public string Encrypt(int value)
         {
             // Sinh salt ngẫu nhiên
@@ -73,6 +98,11 @@ namespace POS.Helpers
             return ToBase62(combinedValue);
         }
 
+        /// <summary>
+        /// Giải mã một chuỗi Base62 thành số nguyên
+        /// </summary>
+        /// <param name="cipherText"></param>
+        /// <returns></returns>
         public int Decrypt(string cipherText)
         {
             // Decode từ Base62
@@ -99,6 +129,11 @@ namespace POS.Helpers
             return ((left << 16) | right) ^ salt;
         }
 
+        /// <summary>
+        /// Chuyển số nguyên thành chuỗi Base62
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private string ToBase62(long value)
         {
             // Chuyển số nguyên thành chuỗi Base62
@@ -113,6 +148,11 @@ namespace POS.Helpers
             return result.ToString();
         }
 
+        /// <summary>
+        /// Chuyển chuỗi Base62 thành số nguyên
+        /// </summary>
+        /// <param name="base62"></param>
+        /// <returns></returns>
         private long FromBase62(string base62)
         {
             // Chuyển chuỗi Base62 thành số nguyên

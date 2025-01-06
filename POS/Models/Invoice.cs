@@ -3,6 +3,9 @@ using System.ComponentModel;
 
 namespace POS.Models
 {
+    /// <summary>
+    /// Invoice model
+    /// </summary>
     public class Invoice:INotifyPropertyChanged
     {
 

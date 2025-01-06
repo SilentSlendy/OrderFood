@@ -5,8 +5,19 @@ using Microsoft.UI.Xaml.Data;
 
 namespace POS.Converters
 {
+    /// <summary>
+    /// Chuyển đổi ngày thành chuỗi và ngược lại
+    /// </summary>
     public class DateToStringConverter : IValueConverter
     {
+        /// <summary>
+        /// Chuyển đổi ngày thành chuỗi
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="language"></param>
+        /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is DateTime date)
@@ -16,7 +27,14 @@ namespace POS.Converters
             return string.Empty;
         }
 
-        // Convert string back to DateTime
+        /// <summary>
+        /// Chuyển đổi chuỗi thành ngày
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="language"></param>
+        /// <returns></returns>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             if (value is string dateString)

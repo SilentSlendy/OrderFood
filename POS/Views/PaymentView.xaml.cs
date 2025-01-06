@@ -8,6 +8,7 @@ using POS.Models;
 using System.Linq;
 using Microsoft.UI.Xaml.Input;
 using System.Threading.Tasks;
+using POS.Shells;
 
 
 namespace POS.Views
@@ -17,6 +18,7 @@ namespace POS.Views
     /// </summary>
     public sealed partial class PaymentView : Page
     {
+        bool isPaidInvoice = false;
         /// <summary>
         /// ViewModel quản lý logic và dữ liệu của giao diện thanh toán.
         /// </summary>
@@ -40,9 +42,27 @@ namespace POS.Views
         /// <param name="e"></param>
         private async void OnSubmitPayment(object sender, RoutedEventArgs e)
         {
+            if (ViewModel.TotalCost <= 0) 
+            {
+                ContentDialog errorDialog = new ContentDialog
+                {
+                    Title = "Lỗi",
+                    Content = "Không thể thanh toán khi chưa có đơn hàng.",
+                    CloseButtonText = "Đóng",
+                    DefaultButton = ContentDialogButton.Close,
+                    XamlRoot = this.XamlRoot
+                };
+                await errorDialog.ShowAsync();
+                return;
+            }
+
             if (ViewModel.SelectedPaymentMethod == "Tiền mặt")
             {
-                ViewModel.InvoiceId = ViewModel.SaveToDB();
+                {
+                    ViewModel.InvoiceId = ViewModel.SaveToDB();
+                }
+
+                // Delete used discount code
                 if (ViewModel.DiscountCode != null)
                 {
                     ViewModel.DeleteUsedDiscountCode();
@@ -72,6 +92,9 @@ namespace POS.Views
             }
         }
 
+        /// <summary>
+        /// Hiển thị dialog xác nhận thanh toán qua MoMo.
+        /// </summary>
         private async void ShowPaymentConfirmDialog()
         {
             ContentDialog paymentConfirmDialog = new ContentDialog
@@ -85,7 +108,10 @@ namespace POS.Views
             ContentDialogResult result = await paymentConfirmDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                ViewModel.InvoiceId = ViewModel.SaveToDB();
+                {
+                    ViewModel.InvoiceId = ViewModel.SaveToDB();
+                }
+                // Delete used discount code
                 if (ViewModel.DiscountCode != null)
                 {
                     ViewModel.DeleteUsedDiscountCode();
@@ -100,6 +126,9 @@ namespace POS.Views
             }
         }
 
+        /// <summary>
+        /// Hiển thị dialog lỗi.
+        /// </summary>
         private async void ShowErrorDialog()
         {
             ContentDialog errorDialog = new ContentDialog
@@ -114,7 +143,11 @@ namespace POS.Views
         }
 
 
-        // Handle case text box is empty
+        /// <summary>
+        /// Xử lý sự kiện khi thay đổi số tiền nhận được.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ReceivedAmountTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(ReceivedAmountTextBox.Text))
@@ -128,6 +161,9 @@ namespace POS.Views
         /// </summary>
         private async void ShowInvoiceDialog()
         {
+            // Lấy tên khách hàng từ DB và lưu vào ViewModel
+            ViewModel.GetCustomerName();
+
             // Hiển thị dialog hóa đơn
             ContentDialogResult result = await InvoiceDialog.ShowAsync();
         }
@@ -148,6 +184,11 @@ namespace POS.Views
             navigation.SetCurrentNavigationViewItem(festivalItem);
         }
 
+        /// <summary>
+        /// Xử lý sự kiện khi nhấn nút mở account.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AccountItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
             // Lấy NavigationViewItem từ sender

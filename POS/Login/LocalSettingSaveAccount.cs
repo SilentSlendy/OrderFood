@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -78,10 +79,8 @@ namespace POS.Login
             {
                 var encryptedUsernameBase64 = (string)localSettings.Values["UsernameInBase64"];
                 var usernameEntropyBase64 = (string)localSettings.Values["UsernameEntropyInBase64"];
-
                 var encryptedUsernameInBytes = Convert.FromBase64String(encryptedUsernameBase64);
                 var usernameEntropyInBytes = Convert.FromBase64String(usernameEntropyBase64);
-
                 var usernameInBytes = ProtectedData.Unprotect(
                     encryptedUsernameInBytes,
                     usernameEntropyInBytes,

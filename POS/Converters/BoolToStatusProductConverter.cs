@@ -15,7 +15,6 @@ namespace POS.Converters
         {
             if (value is bool boolValue)
             {
-                // Trả về chuỗi dựa trên giá trị bool
                 return boolValue ?_trueString : _falseString;
             }
             return null;
@@ -25,10 +24,9 @@ namespace POS.Converters
         {
             if (value is string stringValue)
             {
-                // Chuyển đổi ngược chuỗi sang bool
                 return string.Equals(stringValue, _trueString, StringComparison.OrdinalIgnoreCase);
             }
-            return false; // Giá trị mặc định nếu chuyển đổi thất bại
+            return false; 
         }
     }
 }

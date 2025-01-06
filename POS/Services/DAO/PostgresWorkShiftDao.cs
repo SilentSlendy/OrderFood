@@ -7,10 +7,22 @@ using POS.Helpers;
 
 namespace POS.Services.DAO
 {
+    /// <summary>
+    /// DAO cho các thao tác liên quan đến WorkShift
+    /// </summary>
     public class PostgresWorkShiftDao : IWorkShiftDao
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PostgresWorkShiftDao() { }
 
+        /// <summary>
+        /// Lấy tất cả các ca làm việc
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rowsPerPage"></param>
+        /// <returns></returns>
         public Tuple<int, List<WorkShift>> GetAllWorkShifts(int page, int rowsPerPage)
         {
             var workShifts = new List<WorkShift>();
@@ -55,7 +67,11 @@ namespace POS.Services.DAO
             return new Tuple<int, List<WorkShift>>(totalItems, workShifts);
         }
 
-        // Thêm ca làm việc mới
+        /// <summary>
+        /// Thêm một ca làm việc mới
+        /// </summary>
+        /// <param name="workShift"></param>
+        /// <returns></returns>
         public int InsertWorkShift(WorkShift workShift)
         {
             int newId;
@@ -80,7 +96,11 @@ namespace POS.Services.DAO
             return newId;
         }
 
-        // Cập nhật thông tin ca làm việc
+        /// <summary>
+        /// Cập nhật một ca làm việc
+        /// </summary>
+        /// <param name="workShift"></param>
+        /// <returns></returns>
         public bool UpdateWorkShift(WorkShift workShift)
         {
             int rowsAffected;
@@ -117,7 +137,10 @@ namespace POS.Services.DAO
             return rowsAffected > 0;
         }
 
-        // Xóa ca làm việc theo ID
+        /// <summary>
+        /// Xóa một ca làm việc theo ID
+        /// </summary>
+        /// <param name="workShiftId"></param>
         public void RemoveWorkShiftById(int workShiftId)
         {
             using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))

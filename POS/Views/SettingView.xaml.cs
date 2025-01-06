@@ -1,36 +1,24 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using POS.Helpers;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using POS.Models;
-using POS.Services.DAO;
-
-using System.Net.Http;
-using System.Text.Json;
-using Newtonsoft.Json.Linq;
-using System.Security.Cryptography;
 using POS.ViewModels;
 
 
 namespace POS.Views
 {
+    /// <summary>
+    /// Trang cài đặt
+    /// </summary>
     public sealed partial class SettingView : Page
     {
+        /// <summary>
+        /// ViewModel
+        /// </summary>
         public SettingsViewModel ViewModel { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public SettingView()
         {
             this.InitializeComponent();
@@ -44,7 +32,9 @@ namespace POS.Views
             InitializeFields();
         }
 
-        // Khởi tạo các trường trong giao diện từ ViewModel
+        /// <summary>
+        /// Khởi tạo giao diện với giá trị từ ViewModel
+        /// </summary>
         private void InitializeFields()
         {
             VatTextBox.Text = ViewModel.VAT.ToString();
@@ -53,7 +43,11 @@ namespace POS.Views
             IpnUrlTextBox.Text = ViewModel.IpnUrl;
         }
 
-        // Xử lý sự kiện khi nhấn nút Lưu
+        /// <summary>
+        /// Sự kiện click nút lưu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnSaveClick(object sender, RoutedEventArgs e)
         {
             // Cập nhật dữ liệu vào ViewModel
@@ -76,7 +70,10 @@ namespace POS.Views
             ShowMessage("Vui lòng khởi động lại ứng dụng để cập nhật thông tin.");
         }
 
-        // Hàm hiển thị thông báo thành công
+        /// <summary>
+        /// Hiển thị thông báo lưu thành công
+        /// </summary>
+        /// <param name="message"></param>
         private async void ShowMessage(string message)
         {
             var dialog = new ContentDialog
@@ -89,7 +86,10 @@ namespace POS.Views
             await dialog.ShowAsync();
         }
 
-        // Hàm hiển thị thông báo lỗi
+        /// <summary>
+        /// Hiển thị thông báo lỗi
+        /// </summary>
+        /// <param name="message"></param>
         private async void ShowError(string message)
         {
             var dialog = new ContentDialog

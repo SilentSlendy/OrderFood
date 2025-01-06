@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="POS.Views.CustomerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:local1="using:POS.Views"
+    xmlns:local2="using:POS.ViewModels"
+    xmlns:local3="using:POS.Styles"
+    xmlns:local4="using:POS.Converters"                   
+    xmlns:models="using:POS.Models"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:primitives="using:CommunityToolkit.WinUI.UI.Controls.Primitives" 
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <!-- Import Resources -->
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Styles/CustomStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <local4:DateToStringConverter x:Key="DateToStringConverter"/>
+
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="Beige">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+
+        <!--mid side-->
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <!--head-->
+            <Grid Margin="8">
+                <StackPanel Orientation="Horizontal" BorderBrush="BurlyWood" BorderThickness="0 0 0 2">
+                <!--search bar-->
+                <AutoSuggestBox 
+                    x:Name="SearchBox"
+                    PlaceholderText="Tìm kiếm" 
+                    FontSize="12" 
+                    Width="400"  
+                    Height="40" 
+                    Margin="8" 
+                    VerticalContentAlignment="Center" 
+                    Background="BurlyWood" 
+                    QueryIcon="Find"  
+                    QuerySubmitted="AutoSuggestBox_QuerySubmitted"/>
+            </StackPanel>
+                <!--add, remove btn-->
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button  Margin="8" Content="Thêm" Width="180" Height="40" HorizontalAlignment="Center" 
+                        Click="AddCustomer_Click" Style="{StaticResource CustomButtonStyle}"/>
+                    <Button Margin="8" Content="Xóa" Width="180" Height="40" HorizontalAlignment="Center"
+                        Click="DeleteCustomer_Click" Style="{StaticResource CustomButtonStyle}"/>
+                </StackPanel>
+            </Grid>
+            <!--refresh btn-->
+                <!--<Button Width="40" Height="40" HorizontalAlignment="Center" Style="{StaticResource CustomButtonStyle}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <FontIcon Glyph="&#xE72C;" />
+                    </StackPanel>
+                </Button>-->
+
+
+            <!--items-->
+
+            <StackPanel>
+                <controls:DataGrid
+                    x:Name="itemsDataGrid"
+                    ItemsSource="{x:Bind ViewModel.Customers, Mode=OneWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectedCustomer, Mode=TwoWay}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    AutoGenerateColumns="False"
+                    IsReadOnly="False"
+                    Sorting="OnDataGridSorting">
+
+                    <controls:DataGrid.Resources>
+                        <Color x:Key="WheatColor">#F5DEB3</Color>
+                        <!--<Color x:Key="YellowishColor">#FFFFF700</Color>-->
+                        <!--<Color x:Key="BlueishColor">#FF00e5ff</Color>-->
+                        <StaticResource x:Key="DataGridColumnHeaderBackgroundColor" ResourceKey="WheatColor"/>
+                        <!--<StaticResource x:Key="DataGridColumnHeaderHoveredBackgroundColor" ResourceKey="YellowishColor"/>-->
+                        <!--<StaticResource x:Key="DataGridColumnHeaderPressedBackgroundColor" ResourceKey="BlueishColor"/>-->
+                    </controls:DataGrid.Resources>
+
+                    <controls:DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="primitives:DataGridColumnHeader">
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                        </Style>
+                    </controls:DataGrid.ColumnHeaderStyle>
+
+                    <controls:DataGrid.RowStyle>
+                        <Style TargetType="controls:DataGridRow">
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="Height" Value="49"/>
+                            <!--<Setter Property="Background" Value="White"/>-->
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Style>
+                    </controls:DataGrid.RowStyle>
+
+                    <controls:DataGrid.Columns>
+                        <controls:DataGridTextColumn Header="Mã khách hàng" Binding="{Binding CustomerID}" Width="*" IsReadOnly="True"/>
+                        <controls:DataGridTextColumn Header="Tên khách hàng" Binding="{Binding Name}" Width="*" />
+                        <controls:DataGridTextColumn Header="Số điện thoại" Binding="{Binding PhoneNumber}" Width="*" />
+                        <controls:DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*" />
+                        <controls:DataGridTextColumn Header="Địa chỉ" Binding="{Binding Address}" Width="*" />
+                        <controls:DataGridTextColumn Header="Loại khách hàng" Binding="{Binding CustomerType}" Width="*" />
+                    </controls:DataGrid.Columns>
+                </controls:DataGrid>
+            </StackPanel>
+
+            <!--ContentDialog for adding new Customer-->
+            <ContentDialog
+
+            x:Name="AddCustomerDialog"
+            Title="Thêm khách hàng"
+            PrimaryButtonText="Hủy"
+            SecondaryButtonText="Lưu"
+            PrimaryButtonClick="OnSaveCustomer"
+            SecondaryButtonClick="OnCancelAddCustomer"
+            CornerRadius="10"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch">
+
+                <StackPanel Spacing="10" Padding="20">
+                     <TextBox x:Name="NameTextBox" PlaceholderText="Tên khách hàng" Margin="0 5" />
+                     <TextBox x:Name="PhoneNumberTextBox" PlaceholderText="Số điện thoại" Margin="0 5" />
+                     <TextBox x:Name="EmailTextBox" PlaceholderText="Email" Margin="0 5" />
+                     <TextBox x:Name="AddressTextBox" PlaceholderText="Địa chỉ" Margin="0 5" />
+                     <TextBox x:Name="CustomerTypeTextBox" PlaceholderText="Loại khách hàng" Margin="0 5" />
+                </StackPanel>
+            </ContentDialog>
+
+            <!-- TeachingTip for notification -->
+
+            <Grid>
+                <!--Add-->
+                <muxc:TeachingTip
+
+                x:Name="AddSuccessTeachingTip"
+                Subtitle="Khách hàng đã được lưu thành công!"
+                Background="LightBlue"
+                IsOpen="False" />
+
+
+
+                <!--Delete-->
+                <muxc:TeachingTip
+
+
+
+                x:Name="DeleteSuccessTeachingTip"
+                Subtitle="Khách hàng đã được xóa khỏi hệ thống."
+                Background="LightBlue"
+                IsOpen="False" />
+
+
+            </Grid>
+        </StackPanel>
+
+        <!--paging-->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Name="previousButton" Width="80" Height="35" Content="&lt; Back" Click="previousButton_Click"/>
+            <!--combobox phân trang-->
+            <ComboBox Name="pagesComboBox" Width="100" Height="35" SelectionChanged="pagesComboBox_SelectionChanged" HorizontalAlignment="Center">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <Run Text="{Binding Page}"/> / <Run Text="{Binding Total}"/>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <Button Name="nextButton" Width="80" Height="35" Content="Next &gt;" Click="nextButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>

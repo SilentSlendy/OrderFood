@@ -3,6 +3,9 @@ using System.ComponentModel;
 
 namespace POS.Models
 {
+    /// <summary>
+    /// Warehouse Model
+    /// </summary>
     public class Warehouse : INotifyPropertyChanged
     {
         private int warehouseID;

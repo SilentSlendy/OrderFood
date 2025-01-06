@@ -4,17 +4,31 @@ using Windows.Storage;
 
 namespace POS.ViewModels
 {
+    /// <summary>
+    /// View model cho Settings
+    /// </summary>
     public class SettingsViewModel : INotifyPropertyChanged
     {
+        /// <summary>
+        /// View model cho Payment
+        /// </summary>
         private PaymentViewModel _paymentViewModel;
+        /// <summary>
+        /// Local settings
+        /// </summary>
         private readonly ApplicationDataContainer _localSettings;
 
-        // Giá trị mặc định
+        /// <summary>
+        /// Giá trị mặc định
+        /// </summary>
         private readonly float defaultVAT = 10.0f;
         private readonly string defaultAccessKey = "F8BBA842ECF85";
         private readonly string defaultSecretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
         private readonly string defaultIpnUrl = "https://webhook.site/4cb43743-df24-494e-839d-c6cc184d872c";
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public SettingsViewModel()
         {
             _localSettings = ApplicationData.Current.LocalSettings;
@@ -26,7 +40,9 @@ namespace POS.ViewModels
             IpnUrl = GetSetting(nameof(IpnUrl), defaultIpnUrl);
         }
 
-        // Thuộc tính có thông báo thay đổi
+        /// <summary>
+        /// Thuộc tính có thông báo thay đổi
+        /// </summary>
         private float _vat;
         public float VAT
         {
@@ -39,6 +55,9 @@ namespace POS.ViewModels
             }
         }
 
+        /// <summary>
+        /// Access key
+        /// </summary>
         private string _accessKey;
         public string AccessKey
         {
@@ -51,6 +70,9 @@ namespace POS.ViewModels
             }
         }
 
+        /// <summary>
+        /// Secret key
+        /// </summary>
         private string _secretKey;
         public string SecretKey
         {
@@ -63,6 +85,9 @@ namespace POS.ViewModels
             }
         }
 
+        /// <summary>
+        /// Ipn Url webhook
+        /// </summary>
         private string _ipnUrl;
         public string IpnUrl
         {
@@ -75,7 +100,13 @@ namespace POS.ViewModels
             }
         }
 
-        // Hàm hỗ trợ
+        /// <summary>
+        /// Lấy giá trị từ LocalSettings hoặc giá trị mặc định
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
         private T GetSetting<T>(string key, T defaultValue)
         {
             if (_localSettings.Values[key] is T value)
@@ -84,18 +115,28 @@ namespace POS.ViewModels
             return defaultValue;
         }
 
+        /// <summary>
+        /// Lưu giá trị vào LocalSettings
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         private void SaveToLocalSetting(string key, object value)
         {
             _localSettings.Values[key] = value;
         }
 
+        /// <summary>
+        /// Load local settings
+        /// </summary>
         public void PaymentLoadLocalSettings()
         {
             _paymentViewModel = new PaymentViewModel();
             _paymentViewModel.LoadLocalSettings();
         }
 
-        // INotifyPropertyChanged Implementation
+        /// <summary>
+        /// Sự kiện PropertyChanged
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

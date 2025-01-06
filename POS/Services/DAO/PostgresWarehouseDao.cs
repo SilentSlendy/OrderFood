@@ -8,10 +8,25 @@ using System.Diagnostics;
 
 namespace POS.Services.DAO
 {
+    /// <summary>
+    /// DAO cho các thao tác liên quan đến Warehouse
+    /// </summary>
     public class PostgresWarehouseDao : IWarehouseDao
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PostgresWarehouseDao() { }
 
+        /// <summary>
+        /// Lấy tất cả các kho hàng
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rowsPerPage"></param>
+        /// <param name="searchKeyword"></param>
+        /// <param name="sortColumn"></param>
+        /// <param name="sortDirection"></param>
+        /// <returns></returns>
         public Tuple<int, List<Warehouse>> GetAllWarehouses(int page, int rowsPerPage, string searchKeyword, string sortColumn = null, string sortDirection = null)
         {
             var warehouses = new List<Warehouse>();
@@ -70,6 +85,11 @@ namespace POS.Services.DAO
             return new Tuple<int, List<Warehouse>>(totalRecords, warehouses);
         }
 
+        /// <summary>
+        /// Thêm một kho hàng mới
+        /// </summary>
+        /// <param name="warehouse"></param>
+        /// <returns></returns>
         public int InsertWarehouse(Warehouse warehouse)
         {
             int newId;
@@ -95,6 +115,11 @@ namespace POS.Services.DAO
             return newId;
         }
 
+        /// <summary>
+        /// Lấy thông tin kho hàng theo ID
+        /// </summary>
+        /// <param name="warehouse"></param>
+        /// <returns></returns>
         public bool UpdateWarehouse(Warehouse warehouse)
         {
             int rowsAffected;
@@ -132,6 +157,10 @@ namespace POS.Services.DAO
             return rowsAffected > 0;
         }
 
+        /// <summary>
+        /// Xóa một kho hàng theo ID
+        /// </summary>
+        /// <param name="warehouseId"></param>
         public void RemoveWarehouseById(int warehouseId)
         {
             using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))

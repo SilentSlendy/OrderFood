@@ -125,6 +125,7 @@ namespace POS.ViewModels
 
         /// <summary>
         /// Nhân viên được chọn từ giao diện.
+
         /// </summary>
         private Employee _selectedEmployee;
         public Employee SelectedEmployee

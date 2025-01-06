@@ -8,11 +8,11 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="POS.Converters.CardNumberConverter" Collapsed="true" BaseTypeListCollapsed="true">
+  <Class Name="POS.Converters.DateTimeToDateConverter" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="12.25" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Converters\CardNumberConverter.cs</FileName>
+      <FileName>Converters\DateTimeToDateConverter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -93,27 +93,11 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="POS.DetailProductWindow" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="8.75" Y="1.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DetailProductWindow.xaml.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
   <Class Name="POS.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="5.25" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIEAAAAAAAAAAIAAAAAAAAAAEAACAAAACAAAAAgAAAA=</HashCode>
       <FileName>MainWindow.xaml.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
-  </Class>
-  <Class Name="POS.Shell" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="12.25" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ADAAAAAAAAAAAAAAACAQBABAAAAAAAAAAAAAAAAAAEA=</HashCode>
-      <FileName>Shell.xaml.Navigation.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -143,16 +127,18 @@
   <Class Name="POS.Models.Customer" Collapsed="true">
     <Position X="17.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgAAAAAAACAAAAAAAAAAQAQAEAAAAAACAAAAAAAAAAA=</HashCode>
+      <HashCode>AgAAAAAAACAAAAAAIAAAQAQAkAAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>Models\Customer.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="POS.Models.Employee" Collapsed="true">
     <Position X="12.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAACAEAAAAAAAgAAAAAAQAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAIAACAEAAAAAAAgIAAAAAQAgCAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Employee.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="POS.Models.InventoryReport" Collapsed="true">
     <Position X="17.5" Y="1.75" Width="1.5" />
@@ -180,7 +166,7 @@
   <Class Name="POS.Models.InvoiceDetailWithProductInfo" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="8.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAgCAAAAAAAAAAQAAIAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAgAgAAAAAAAAAAgCAAAAAAAAAAQAAIAAA=</HashCode>
       <FileName>Models\InvoiceDetailWithProductInfo.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -227,7 +213,7 @@
   <Class Name="POS.Models.WholeInvoice" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="7" Y="6.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAQAAAAAAQA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAQAAAAQAAAAAAQA=</HashCode>
       <FileName>Models\WholeInvoice.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -266,7 +252,7 @@
   <Class Name="POS.Services.DAO.PostgresInvoiceDao" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="10.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAEAAAEAAAAAAAAAAAAAAAAAAAEIAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAEAAAEAAAAAAAAAAAAAAAAAAAGIAAAIAAAAAAA=</HashCode>
       <FileName>Services\DAO\PostgresInvoiceDao.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -282,7 +268,7 @@
   <Class Name="POS.Services.DAO.PostgresProductDao" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="14" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAACAAAAIAAAAACAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <HashCode>AAAAAAAAAAACAAAAIAAAAACAAAAAACAAAAAAAAAAABA=</HashCode>
       <FileName>Services\DAO\PostgresProductDao.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -321,7 +307,7 @@
   <Class Name="POS.ViewModels.InvoiceViewModel" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="14" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAgAAAAkAAAAAICAAAAQBgAQAAIAAAAgAACAAAAI=</HashCode>
+      <HashCode>AAAAAgAAAAkAAAAAICAAAAQBgAQAAIAAACgAAGAAAAI=</HashCode>
       <FileName>ViewModels\InvoiceViewModel.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -329,7 +315,7 @@
   <Class Name="POS.ViewModels.OrderDetailViewModel" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="10.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAQAQAAAggCgAAIAAABAAAgAAAQIAAAAAIAABAAAA=</HashCode>
+      <HashCode>AAIAYAQAAAggCgQAIAAABAAAkAAAwICAAAAIAABAAAA=</HashCode>
       <FileName>ViewModels\OrderDetailViewModel.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -344,7 +330,7 @@
   <Class Name="POS.ViewModels.PaymentViewModel" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="17.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AoAAIpCgAGtACgAJcIAAQAAQwAAAAKAGAIADBARAAAA=</HashCode>
+      <HashCode>AoAAIpCgAEtACgAJcIAIAAAQ0ASAAKAEAIADBARAABA=</HashCode>
       <FileName>ViewModels\PaymentViewModel.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -384,15 +370,14 @@
   <Class Name="POS.Views.InvoiceView" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="12.25" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAQAACAAAAAAAAAAAAAAAAkBAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAEAQIACAIAAAAACAAAAAEAAkBAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>Views\InvoiceView.xaml.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="POS.Views.Menu" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="7" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAQAADAAAAAAAAAAAAAAAAkRAAAAAABEEAAIAAACA=</HashCode>
+      <HashCode>AAAAQAADAAAAAAAAAAAAAAQAkRAAAAAABEEAAIAAACA=</HashCode>
       <FileName>Views\Menu.xaml.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -410,6 +395,14 @@
     <TypeIdentifier>
       <HashCode>gABASAICAAAAAAAAAAAAAACAsBAAQAAAAAEAAAAAgHA=</HashCode>
       <FileName>Views\WarehouseView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="POS.Shell_Owner" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAABAAAAAAgAAAAACAQBABAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Shell\Shell-Owner.xaml..cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -444,7 +437,7 @@
   <Interface Name="POS.Interfaces.IInvoiceDao" Collapsed="true">
     <Position X="10.5" Y="8" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAEAAAEAAAAAAAAAAAAAAAAAAAEIAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAEAAAEAAAAAAAAAAAAAAAAAAAGIAAAIAAAAAAA=</HashCode>
       <FileName>Interfaces\IDao.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -479,7 +472,7 @@
   <Interface Name="POS.Services.INavigation" Collapsed="true">
     <Position X="14" Y="8" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAACAQAABAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <HashCode>AAAABAAAAAAAAAAAACAQAABAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Services\INavigation.cs</FileName>
     </TypeIdentifier>
   </Interface>

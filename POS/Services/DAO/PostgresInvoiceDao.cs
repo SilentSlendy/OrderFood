@@ -7,10 +7,23 @@ using POS.Helpers;
 
 namespace POS.Services.DAO
 {
+    /// <summary>
+    /// DAO cho các thao tác liên quan đến Invoice
+    /// </summary>
     public class PostgresInvoiceDao : IInvoiceDao
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PostgresInvoiceDao() { }
 
+        /// <summary>
+        /// Lấy tất cả các hóa đơn
+        /// </summary>
+        /// <param name="hoadonID"></param>
+        /// <param name="page"></param>
+        /// <param name="rowsPerPage"></param>
+        /// <returns></returns>
         public Tuple<int, List<Invoice>> GetAllInvoices(string hoadonID, int page, int rowsPerPage)
         {
             var invoices = new List<Invoice>();
@@ -67,9 +80,68 @@ namespace POS.Services.DAO
 
             return new Tuple<int, List<Invoice>>(totalItems, invoices);
         }
-        //=======================================================================================================
-        //Insert Invoice
 
+        public Tuple<int, List<Invoice>> GetAllNotPaidInvoices(string hoadonID, int page, int rowsPerPage)
+        {
+            var invoices = new List<Invoice>();
+            int totalItems = 0;
+
+            using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))
+            {
+                connection.Open();
+
+                var sql = @"
+                SELECT COUNT(*) OVER() AS TotalItems, hoadonid, ngaylaphoadon, tongtien, phuongthucthanhtoan, khachhangid, nhanvienid, giamgia, thuevat, ghichu
+                FROM hoadon where phuongthucthanhtoan is null";
+                if (!string.IsNullOrEmpty(hoadonID))
+                {
+                    sql += " and hoadonid = @hoadonID";
+                }
+                sql += @" OFFSET @Skip LIMIT @Take";
+
+
+                var skip = (page - 1) * rowsPerPage;
+                var command = new NpgsqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@Skip", skip);
+                command.Parameters.AddWithValue("@Take", rowsPerPage);
+                if (!string.IsNullOrEmpty(hoadonID))
+                {
+                    command.Parameters.AddWithValue("@hoadonID", Int32.Parse(hoadonID));
+                }
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (totalItems == 0)
+                        {
+                            totalItems = reader.GetInt32(reader.GetOrdinal("TotalItems"));
+                        }
+
+                        var invoice = new Invoice
+                        {
+                            InvoiceID = reader.GetInt32(reader.GetOrdinal("hoadonid")),
+                            InvoiceDate = reader.GetDateTime(reader.GetOrdinal("ngaylaphoadon")),
+                            TotalAmount = reader.GetDouble(reader.GetOrdinal("tongtien")),
+                            PaymentMethod = reader.IsDBNull(reader.GetOrdinal("phuongthucthanhtoan")) ? null : reader.GetString(reader.GetOrdinal("phuongthucthanhtoan")),
+                            CustomerID = reader.GetInt32(reader.GetOrdinal("khachhangid")),
+                            EmployeeID = reader.GetInt32(reader.GetOrdinal("nhanvienid")),
+                            Discount = reader.GetFloat(reader.GetOrdinal("giamgia")),
+                            Tax = reader.GetDouble(reader.GetOrdinal("thuevat")),
+                            Note = reader.IsDBNull(reader.GetOrdinal("ghichu")) ? null : reader.GetString(reader.GetOrdinal("ghichu"))
+                        };
+                        invoices.Add(invoice);
+                    }
+                }
+            }
+            return new Tuple<int, List<Invoice>>(totalItems, invoices);
+        }
+
+        /// <summary>
+        /// Thêm một hóa đơn mới
+        /// </summary>
+        /// <param name="invoice"></param>
+        /// <returns></returns>
         public int InsertInvoice(Invoice invoice)
         {
             int newId;
@@ -98,6 +170,11 @@ namespace POS.Services.DAO
             return newId;
         }
 
+        /// <summary>
+        /// Thêm một hóa đơn mới với ID
+        /// </summary>
+        /// <param name="invoice"></param>
+        /// <returns></returns>
         public int InsertInvoiceWithId(Invoice invoice)
         {
             int newId;
@@ -126,8 +203,51 @@ namespace POS.Services.DAO
 
             return newId;
         }
-        //=======================================================================================================
 
+        /// <summary>
+        /// Lấy thông tin hóa đơn theo ID
+        /// </summary>
+        /// <param name="invoiceId"></param>
+        /// <returns></returns>
+        public Invoice GetInvoiceById(int invoiceId)
+        {
+            Invoice invoice = null;
+            using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))
+            {
+                connection.Open();
+                var sql = @"
+                SELECT hoadonid, ngaylaphoadon, tongtien, phuongthucthanhtoan, khachhangid, nhanvienid, giamgia, thuevat, ghichu
+                FROM hoadon
+                WHERE hoadonid = @InvoiceID";
+                var command = new NpgsqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@InvoiceID", invoiceId);
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        invoice = new Invoice
+                        {
+                            InvoiceID = reader.GetInt32(reader.GetOrdinal("hoadonid")),
+                            InvoiceDate = reader.GetDateTime(reader.GetOrdinal("ngaylaphoadon")),
+                            TotalAmount = reader.GetDouble(reader.GetOrdinal("tongtien")),
+                            PaymentMethod = reader.IsDBNull(reader.GetOrdinal("phuongthucthanhtoan")) ? null : reader.GetString(reader.GetOrdinal("phuongthucthanhtoan")),
+                            CustomerID = reader.GetInt32(reader.GetOrdinal("khachhangid")),
+                            EmployeeID = reader.GetInt32(reader.GetOrdinal("nhanvienid")),
+                            Discount = reader.GetFloat(reader.GetOrdinal("giamgia")),
+                            Tax = reader.GetDouble(reader.GetOrdinal("thuevat")),
+                            Note = reader.IsDBNull(reader.GetOrdinal("ghichu")) ? null : reader.GetString(reader.GetOrdinal("ghichu"))
+                        };
+                    }
+                }
+            }
+            return invoice;
+        }
+
+        /// <summary>
+        /// Cập nhật thông tin hóa đơn
+        /// </summary>
+        /// <param name="invoice"></param>
+        /// <returns></returns>
         public bool UpdateInvoice(Invoice invoice)
         {
             int rowsAffected;
@@ -168,6 +288,10 @@ namespace POS.Services.DAO
             return rowsAffected > 0;
         }
 
+        /// <summary>
+        /// Xóa hóa đơn theo ID
+        /// </summary>
+        /// <param name="invoiceId"></param>
         public void RemoveInvoiceById(int invoiceId)
         {
             using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))

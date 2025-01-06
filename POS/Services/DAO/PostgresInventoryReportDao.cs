@@ -7,10 +7,22 @@ using POS.Helpers;
 
 namespace POS.Services.DAO
 {
+    /// <summary>
+    /// DAO cho các thao tác liên quan đến InventoryReport
+    /// </summary>
     public class PostgresInventoryReportDao : IInventoryReportDao
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PostgresInventoryReportDao() { }
 
+        /// <summary>
+        /// Lấy tất cả các báo cáo tồn kho
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rowsPerPage"></param>
+        /// <returns></returns>
         public Tuple<int, List<InventoryReport>> GetAllInventoryReports(int page, int rowsPerPage)
         {
             var reports = new List<InventoryReport>();
@@ -54,7 +66,11 @@ namespace POS.Services.DAO
             return new Tuple<int, List<InventoryReport>>(totalItems, reports);
         }
 
-        // Thêm báo cáo tồn kho mới
+        /// <summary>
+        /// Thêm báo cáo tồn kho mới
+        /// </summary>
+        /// <param name="report"></param>
+        /// <returns></returns>
         public int InsertInventoryReport(InventoryReport report)
         {
             int newId;
@@ -78,7 +94,11 @@ namespace POS.Services.DAO
             return newId;
         }
 
-        // Cập nhật thông tin báo cáo tồn kho
+        /// <summary>
+        /// Cập nhật thông tin báo cáo tồn kho
+        /// </summary>
+        /// <param name="report"></param>
+        /// <returns></returns>
         public bool UpdateInventoryReport(InventoryReport report)
         {
             int rowsAffected;
@@ -114,7 +134,10 @@ namespace POS.Services.DAO
             return rowsAffected > 0;
         }
 
-        // Xóa báo cáo tồn kho theo ID
+        /// <summary>
+        /// Xóa báo cáo tồn kho theo ID
+        /// </summary>
+        /// <param name="reportId"></param>
         public void RemoveInventoryReportById(int reportId)
         {
             using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))

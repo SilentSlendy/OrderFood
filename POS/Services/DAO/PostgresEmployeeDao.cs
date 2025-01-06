@@ -7,11 +7,27 @@ using POS.Helpers;
 
 namespace POS.Services.DAO
 {
+    /// <summary>
+    /// DAO cho các thao tác liên quan đến Employee
+    /// </summary>
     public class PostgresEmployeeDao : IEmployeeDao
     {
+        /// <summary>
+        ///     
+        /// </summary>
         public PostgresEmployeeDao() { }
-
-        public Tuple<int, List<Employee>> GetAllEmployees(int page, int rowsPerPage, string searchKeyword, string position, int isSalarySort = 0)
+        //=======================================================================================================
+        //Get all employees
+        /// <summary>
+        /// Lấy tất cả các nhân viên
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rowsPerPage"></param>
+        /// <param name="searchKeyword"></param>
+        /// <param name="position"></param>
+        /// <param name="isSalarySort"></param>
+        /// <returns></returns>
+        public Tuple<int, List<Employee>> GetAllEmployees(int page, int rowsPerPage, string searchKeyword, string position, string isSalarySort)
         {
             var employees = new List<Employee>();
             int totalItems = 0;
@@ -58,8 +74,53 @@ namespace POS.Services.DAO
 
             return new Tuple<int, List<Employee>>(totalItems, employees);
         }
+        public List<EmployeeDataForLogin> GetAllEmployeesWithAccountData()
+        {
+            var employees = new List<EmployeeDataForLogin>();
+            int totalItems = 0;
 
-        // Thêm nhân viên mới
+            using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))
+            {
+                connection.Open();
+
+                var sql = @"
+                SELECT nhanvienid, tennhanvien, chucvu, luong, ngayvaolam, trangthai, username, iv_username, password, iv_password
+                FROM nhanvien Where username is not NULL";
+
+                var command = new NpgsqlCommand(sql, connection);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var employee = new EmployeeDataForLogin
+                        {
+                            EmployeeID = reader.GetInt32(reader.GetOrdinal("nhanvienid")),
+                            Name = reader.GetString(reader.GetOrdinal("tennhanvien")),
+                            Position = reader.GetString(reader.GetOrdinal("chucvu")),
+                            Salary = reader.GetDecimal(reader.GetOrdinal("luong")),
+                            HireDate = reader.GetDateTime(reader.GetOrdinal("ngayvaolam")),
+                            Status = reader.GetBoolean(reader.GetOrdinal("trangthai")),
+                            Username = reader["username"] as byte[],
+                            Username_iv = reader["iv_username"] as byte[],
+                            Password = reader["password"] as byte[],
+                            Password_iv = reader["iv_password"] as byte[]
+
+                        };
+                        employees.Add(employee);
+                    }
+                }
+            }
+
+            return employees;
+        }
+        //=======================================================================================================
+
+        /// <summary>
+        /// Thêm một nhân viên mới
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         public int InsertEmployee(Employee employee)
         {
             int newId;
@@ -85,7 +146,11 @@ namespace POS.Services.DAO
             return newId;
         }
 
-        // Cập nhật thông tin nhân viên
+        /// <summary>
+        /// Cập nhật thông tin nhân viên
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         public bool UpdateEmployee(Employee employee)
         {
             int rowsAffected;
@@ -123,7 +188,10 @@ namespace POS.Services.DAO
             return rowsAffected > 0;
         }
 
-        // Xóa nhân viên theo ID
+        /// <summary>
+        /// Xóa một nhân viên theo ID
+        /// </summary>
+        /// <param name="employeeId"></param>
         public void RemoveEmployeeById(int employeeId)
         {
             using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))
@@ -147,6 +215,56 @@ namespace POS.Services.DAO
 
                 command.ExecuteNonQuery();
             }
+        }
+        public static void updateAccount(int id, byte[] username, byte[] iv_username, byte[] password, byte[] iv_password)
+        {
+            using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))
+            {
+                connection.Open();
+                var sql = "UPDATE nhanvien SET username = @Username,iv_username = @IV_username , password = @Password, iv_password = @IV_password " +
+                    "WHERE nhanvienid = @EmployeeID";
+                var command = new NpgsqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@EmployeeID", id);
+                command.Parameters.AddWithValue("@Username", username);
+                command.Parameters.AddWithValue("@IV_username", iv_username);
+                command.Parameters.AddWithValue("@Password", password);
+                command.Parameters.AddWithValue("@IV_password", iv_password);
+                command.ExecuteNonQuery();
+            }
+        }
+        //Get all accounts
+        public List<Account> GetAllAccounts()
+        {
+            var accounts = new List<Account>();
+
+            using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))
+            {
+                connection.Open();
+
+                var sql = @"
+                SELECT username, iv_username, password, iv_password
+                FROM nhanvien Where username is not NULL";
+
+                var command = new NpgsqlCommand(sql, connection);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var account = new Account()
+                        {
+                            Username = reader["username"] as byte[],
+                            Username_iv = reader["iv_username"] as byte[],
+                            Password = reader["password"] as byte[],
+                            Password_iv = reader["iv_password"] as byte[]
+
+                        };
+                        accounts.Add(account);
+                    }
+                }
+            }
+
+            return accounts;
         }
     }
 }

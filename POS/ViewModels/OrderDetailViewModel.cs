@@ -1,6 +1,7 @@
 ﻿using POS.Interfaces;
 using POS.Models;
 using POS.Services.DAO;
+using POS.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,15 +17,32 @@ namespace POS.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private IInvoiceDao _invoiceDao = new PostgresInvoiceDao();
+        private ICustomerDao _customerDao = new PostgresCustomerDao();
         private IInvoiceDetailDao _invoiceDetailDao = new PostgresInvoiceDetailDao();
-
+        public List<Customer> AllCustomers { get; set; }
         public FullObservableCollection<Order> Items { get; set; }
             = new FullObservableCollection<Order>();
         private double _subTotal;
         private double _total;
         private double _tax;
-
+        public int CustomerID { get; set; } = -1;
+        public string CustomerName { get; set; }
+        public void getCustomersListForAutoSuggest()
+        {
+            AllCustomers = _customerDao.GetAllCustomers();
+        }
+        public void SetCustomerNameByCustomerID(int customerID)
+        {
+            CustomerID = customerID;
+            CustomerName = (CustomerID == -1) ? "" : AllCustomers.Find(c => c.CustomerID == CustomerID).Name;
+        }
+        public OrderDetailViewModel()
+        {
+            getCustomersListForAutoSuggest();
+            CustomerName = (CustomerID == -1) ? "" : AllCustomers.Find(c => c.CustomerID == CustomerID).Name;
+        }
         public int InvoiceID { get; set; } = -1;
+        public DateTime InvoiceDate { get; set; } = DateTime.Now;
         public double SubTotal
         {
             get
@@ -101,7 +119,7 @@ namespace POS.ViewModels
             OnPropertyChanged(nameof(Total));
             OnPropertyChanged(nameof(SubTotal));
         }
-        public void SaveToDatabase(int invoiceID=-1)
+        public int SaveToDatabase(int invoiceID=-1,int customerID=-1)
         {
             // Save to database
             Invoice invoice = new Invoice()
@@ -109,7 +127,8 @@ namespace POS.ViewModels
                 TotalAmount = Total,
                 Tax = 10.00,
                 InvoiceDate = DateTime.Now,
-                InvoiceID = invoiceID
+                InvoiceID = invoiceID,
+                CustomerID = customerID,
             };
             int newInvoiceId;
             if (invoiceID==-1)
@@ -133,7 +152,7 @@ namespace POS.ViewModels
                 };
                 _invoiceDetailDao.InsertInvoiceDetail(invoiceDetail);
             }
-            
+            return newInvoiceId;
         }
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

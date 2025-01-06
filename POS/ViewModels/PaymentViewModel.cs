@@ -21,43 +21,119 @@ namespace POS.ViewModels
     /// </summary>
     public class PaymentViewModel : INotifyPropertyChanged
     {
+        /// <summary>
+        /// DAO for invoice
+        /// </summary>
         private IInvoiceDao _invoiceDao = new PostgresInvoiceDao();
+        /// <summary>
+        /// DAO for invoice detail
+        /// </summary>
         private IInvoiceDetailDao _invoiceDetailDao = new PostgresInvoiceDetailDao();
+        /// <summary>
+        /// DAO for discount
+        /// </summary>
         private IDiscountDao _discountDao = new PostgresDiscountDao();
+        /// <summary>
+        /// DAO for customer
+        /// </summary>
+        private ICustomerDao _customerDao = new PostgresCustomerDao();
+        /// <summary>
+        /// View model for settings
+        /// </summary>
         private SettingsViewModel _settingsViewModel = new SettingsViewModel();
+        /// <summary>
+        /// Mã hóa Feistel
+        /// </summary>
         private FeistelCipher _feistelCipher = new FeistelCipher(8, "winui3_discount_key");
+        /// <summary>
+        /// HttpClient for MoMo API
+        /// </summary>
         private static readonly HttpClient client = new HttpClient();
+        /// <summary>
+        /// Phương thức thanh toán
+        /// </summary>
         public ObservableCollection<string> PaymentMethods { get; set; }
+        /// <summary>
+        /// Danh sách sản phẩm trong hóa đơn
+        /// </summary>
         public ObservableCollection<Order> Items { get; set; }
 
+        /// <summary>
+        /// Phương thức thanh toán được chọn
+        /// </summary>
         public string SelectedPaymentMethod { get; set; }
+        /// <summary>
+        /// Thuế VAT
+        /// </summary>
         public float VAT { get; set; }
+        /// <summary>
+        /// Tổng tiền cần thanh toán
+        /// </summary>
         public int TotalCost { get; set; }
+        /// <summary>
+        /// Tổng tiền cần thanh toán sau khi đã tính thuế và giảm giá
+        /// </summary>
         public int TotalPayable { get; set; }
-        public int InvoiceId { get; set; }
-
+        /// <summary>
+        /// ID của hóa đơn
+        /// </summary>
+        public int InvoiceId { get; set; } = -1;
+        /// <summary>
+        /// ID của khách hàng
+        /// </summary>
+        public int CustomerID { get; set; } = -1;
+        /// <summary>
+        /// Tên khách hàng
+        /// </summary>
+        public string CustomerName { get; set; }
+        /// <summary>
+        /// Ngày thanh toán
+        /// </summary>
         public DateTime PaymentDate { get; set; }
+        /// <summary>
+        /// access key cho momo
+        /// </summary>
         public string accessKey { get; set; }
+        /// <summary>
+        /// secret key cho momo
+        /// </summary>
         public string secretKey { get; set; }
+        /// <summary>
+        /// Link webhook
+        /// </summary>
         public string ipnUrl { get; set; }
 
+        /// <summary>
+        /// Tổng tiền cần thanh toán sau khi đã tính thuế và giảm giá.
+        /// </summary>
         private float _vat;
-
+        /// <summary>
+        /// Tổng tiền cần thanh toán
+        /// </summary>
         private int _receivedAmount;
+        /// <summary>
+        /// Số tiền thừa hoặc thiếu sau khi đã thanh toán.
+        /// </summary>
         private int _change;
+        /// <summary>
+        /// Mã giảm giá
+        /// </summary>
         private string _discountCode;
+        /// <summary>
+        /// Giá trị giảm giá
+        /// </summary>
         private int _discountValue = 0;
+        /// <summary>
+        /// Trạng thái mã giảm giá
+        /// </summary>
         private string _discountStatus = "";
 
-
-        ////MoMo API config infomation
-        //string accessKey = "F8BBA842ECF85"; // change your business access key here
-        //string secretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz"; // change your business secret key here
-        //string ipnUrl = "https://webhook.site/4cb43743-df24-494e-839d-c6cc184d872c"; // change your business ipnUrl here
-
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PaymentViewModel()
         {
+            // Khởi tạo các thuộc tính
             PaymentMethods = new ObservableCollection<string>
                 {
                     "Tiền mặt",
@@ -69,7 +145,13 @@ namespace POS.ViewModels
 
         }
 
-        public void SetItems(ObservableCollection<Order> items, double total)
+        /// <summary>
+        /// Gán danh sách sản phẩm và tổng tiền cần thanh toán
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="total"></param>
+        /// <param name="flag"></param>
+        public void SetItems(int invoiceID,ObservableCollection<Order> items, double total, int customerId, int flag)
         {
             Items = new ObservableCollection<Order>(items);
             OnPropertyChanged(nameof(Items));
@@ -77,6 +159,8 @@ namespace POS.ViewModels
             OnPropertyChanged(nameof(TotalCost));
             CalculateTotalPayment();
             OnPropertyChanged(nameof(TotalPayable));
+            InvoiceId = invoiceID;
+            CustomerID = customerId;
         }
 
         /// <summary>
@@ -112,6 +196,9 @@ namespace POS.ViewModels
             }
         }
 
+        /// <summary>
+        /// Mã giảm giá
+        /// </summary>
         public string DiscountCode
         {
             get => _discountCode;
@@ -127,6 +214,9 @@ namespace POS.ViewModels
             }
         }
 
+        /// <summary>
+        /// Giá trị giảm giá
+        /// </summary>
         public int DiscountValue
         {
             get => _discountValue;
@@ -142,6 +232,9 @@ namespace POS.ViewModels
             }
         }
 
+        /// <summary>
+        /// Trạng thái mã giảm giá
+        /// </summary>
         public string DiscountStatus
         {
             get => _discountStatus;
@@ -155,6 +248,9 @@ namespace POS.ViewModels
             }
         }
 
+        /// <summary>
+        /// Tính tổng tiền cần thanh toán sau khi đã tính thuế và giảm giá.
+        /// </summary>
         public void CalculateTotalPayment()
         {
             TotalPayable = (int)(TotalCost + (TotalCost * (VAT / 100)) - DiscountValue);
@@ -178,7 +274,10 @@ namespace POS.ViewModels
             Change = ReceivedAmount - TotalPayable;
         }
 
-        // Save invoice an detail to database
+        /// <summary>
+        /// Lưu hóa đơn vào cơ sở dữ liệu.
+        /// </summary>
+        /// <returns></returns>
         public int SaveToDB()
         {
             Invoice invoice = new Invoice()
@@ -187,10 +286,20 @@ namespace POS.ViewModels
                 Tax = VAT,
                 InvoiceDate = PaymentDate,
                 PaymentMethod = SelectedPaymentMethod,
-                Discount = DiscountValue
+                Discount = DiscountValue,
+                InvoiceID = InvoiceId,
+                CustomerID = this.CustomerID
             };
-            int newInvoiceId = _invoiceDao.InsertInvoice(invoice);
-
+            int newInvoiceId;
+            if (InvoiceId == -1)
+            {
+                newInvoiceId = _invoiceDao.InsertInvoice(invoice);
+            }
+            else
+            {
+                _invoiceDao.RemoveInvoiceById(InvoiceId);
+                newInvoiceId = _invoiceDao.InsertInvoiceWithId(invoice);
+            }
             foreach (var item in Items)
             {
                 InvoiceDetail invoiceDetail = new InvoiceDetail()
@@ -198,7 +307,8 @@ namespace POS.ViewModels
                     InvoiceID = newInvoiceId,
                     ProductID = item.ProductID,
                     Quantity = item.Quantity,
-                    Price = item.Price
+                    Price = item.Price,
+                    Note = item.Note
                 };
                 _invoiceDetailDao.InsertInvoiceDetail(invoiceDetail);
             }
@@ -206,6 +316,38 @@ namespace POS.ViewModels
             return newInvoiceId;
         }
 
+        /// <summary>
+        /// Cập nhật hóa đơn vào cơ sở dữ liệu.
+        /// </summary>
+        public void UpdateDB()
+        {
+            Invoice invoice = _invoiceDao.GetInvoiceById(InvoiceId);
+            // Update invoice
+            invoice.TotalAmount = TotalPayable;
+            invoice.Tax = VAT;
+            invoice.Discount = DiscountValue;
+            invoice.InvoiceDate = PaymentDate;
+            invoice.PaymentMethod = SelectedPaymentMethod;
+            invoice.Note = "NULL"; // cần cập nhật thêm
+            CustomerID = this.CustomerID;
+            _invoiceDao.UpdateInvoice(invoice);
+
+            foreach (var item in Items)
+            {
+                InvoiceDetail invoiceDetail = new InvoiceDetail()
+                {
+                    InvoiceID = InvoiceId,
+                    ProductID = item.ProductID,
+                    Quantity = item.Quantity,
+                    Price = item.Price
+                };
+                _invoiceDetailDao.InsertInvoiceDetail(invoiceDetail);
+            }
+        }
+
+        /// <summary>
+        /// Reset dữ liệu của hóa đơn.
+        /// </summary>
         public void ResetData()
         {
             Items.Clear();
@@ -225,6 +367,12 @@ namespace POS.ViewModels
             DiscountStatus = "";
             OnPropertyChanged(nameof(DiscountStatus));
         }
+
+        /// <summary>
+        /// Kiểm tra mã giảm giá.
+        /// </summary>
+        /// <param name="discountCode"></param>
+        /// <returns></returns>
 
         public bool CheckDiscountCode(string discountCode)
         {
@@ -258,11 +406,20 @@ namespace POS.ViewModels
             }
         }
 
+        /// <summary>
+        /// Xóa mã giảm giá đã sử dụng.
+        /// </summary>
         public void DeleteUsedDiscountCode()
         {
             _discountDao.RemoveDiscountByCode(DiscountCode);
         }
 
+        /// <summary>
+        /// Tạo chữ ký cho MoMo API
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         private static String getSignature(String text, String key)
         {
             // change according to your needs, an UTF8Encoding
@@ -280,6 +437,10 @@ namespace POS.ViewModels
             return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
         }
 
+        /// <summary>
+        /// Gửi yêu cầu thanh toán đến MoMo API
+        /// </summary>
+        /// <returns></returns>
         public async Task<string> RequestMoMoPayment()
         {
             // Generate UUID for requestId and orderId
@@ -328,6 +489,17 @@ namespace POS.ViewModels
             return jMessage["payUrl"].ToString();
         }
 
+        /// <summary>
+        /// Gán tên khách hàng từ ID.
+        /// </summary>
+        public void GetCustomerName()
+        {
+            CustomerName = _customerDao.GetCustomerNameById(CustomerID);
+        }
+
+        /// <summary>
+        /// Load các thiết lập cục bộ.
+        /// </summary>
         public void LoadLocalSettings()
         {
             VAT = _settingsViewModel.VAT;

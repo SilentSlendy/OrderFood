@@ -1,0 +1,96 @@
+<Page
+    x:Class="POS.Views.AccountPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:POS"
+    xmlns:converter="using:POS.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <converter:DecimalToCurrencyConverter x:Key="DecimalToVnCurrencyConverter"/>
+        <converter:DateTimeToDateConverter x:Key="DateTimeToDateConverter"/>
+        <converter:BoolToEmployeeStatus x:Key="BoolToEmployeeStatus"/>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}" Padding="8" Margin="8" CornerRadius="8">
+            <StackPanel>
+                <FontIcon Margin="0 0 16 0" VerticalAlignment="Center" HorizontalAlignment="Center" Glyph="&#xE77B;" FontSize="48" Foreground="Black"/>
+            </StackPanel>
+            <StackPanel>
+            <TextBlock FontWeight="Bold" FontSize="16" Text="{x:Bind AccountViewModel.Employee.Name,Mode=OneWay}"/>
+                <TextBlock>Mã số: 
+                    <Run Text="{x:Bind AccountViewModel.Employee.EmployeeID,Mode=OneWay}"></Run>
+                </TextBlock>
+                <TextBlock Text="{x:Bind AccountViewModel.Employee.Position,Mode=OneWay}"/>
+        </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}" Padding="8" Margin="8" CornerRadius="8">
+            <TextBlock FontWeight="Bold" Margin="0 0 0 16">Thông tin cá nhân</TextBlock>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <StackPanel Margin="0 0 0 16">
+                        <TextBlock Foreground="Gray">Họ và tên</TextBlock>
+                        <TextBlock FontWeight="SemiBold" Text="{x:Bind AccountViewModel.Employee.Name,Mode=OneWay}"/>
+                    </StackPanel>
+                    <StackPanel Margin="0 0 0 16">
+                        <TextBlock Foreground="Gray">Mã nhân viên</TextBlock>
+                        <TextBlock FontWeight="SemiBold" Text="{x:Bind AccountViewModel.Employee.EmployeeID,Mode=OneWay}"/>
+                    </StackPanel>
+                    <StackPanel Margin="0 0 0 16">
+                        <TextBlock Foreground="Gray">Chức vụ</TextBlock>
+                        <TextBlock FontWeight="SemiBold" Text="{x:Bind AccountViewModel.Employee.Position,Mode=OneWay}"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <StackPanel Margin="0 0 0 16">
+                        <TextBlock Foreground="Gray">Mức lương</TextBlock>
+                        <TextBlock FontWeight="SemiBold" Text="{x:Bind AccountViewModel.Employee.Salary,Converter={StaticResource DecimalToVnCurrencyConverter},Mode=OneWay}"/>
+                    </StackPanel>
+                    <StackPanel Margin="0 0 0 16">
+                        <TextBlock Foreground="Gray">Ngày vào làm</TextBlock>
+                        <TextBlock FontWeight="SemiBold" Text="{x:Bind AccountViewModel.Employee.HireDate,Converter={StaticResource DateTimeToDateConverter},Mode=OneWay}"/>
+                    </StackPanel>
+                    <StackPanel Margin="0 0 0 16">
+                        <TextBlock Foreground="Gray">Trạng thái</TextBlock>
+                        <TextBlock FontWeight="SemiBold" Text="{x:Bind AccountViewModel.Employee.Status,Converter={StaticResource BoolToEmployeeStatus},Mode=OneWay}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+        <!--<StackPanel Grid.Row="2">
+        <TextBox x:Name="NewUsernameTextBox" Header="New Username"
+         HorizontalAlignment="Center" VerticalAlignment="Center"
+         Width="200"/>
+        <PasswordBox x:Name="NewPasswordBox" Header="New Password"
+             HorizontalAlignment="Center" VerticalAlignment="Center"
+             Margin="0,50,0,0" Width="200"/>
+        <Button Content="Save" 
+        HorizontalAlignment="Center" VerticalAlignment="Center"
+        Margin="0,120,0,0" Click="OnSaveAccountClick"/>
+        </StackPanel>-->
+        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="2" Padding="8" Orientation="Horizontal">
+            <AppBarButton ToolTipService.ToolTip="Sort" AutomationProperties.Name="Sort">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE77B;"/>
+                </AppBarButton.Icon>
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="Đăng xuất" Background="#fa706b" Click="Logout_Click" Tag="rating"/>
+                        <MenuFlyoutItem Text="Thay đổi tài khoản" Click="ChangeAccount_Click" Tag="match"/>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+        </StackPanel>
+    </Grid>
+</Page>

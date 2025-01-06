@@ -7,10 +7,22 @@ using POS.Helpers;
 
 namespace POS.Services.DAO
 {
+    /// <summary>
+    /// DAO cho các thao tác liên quan đến Discount
+    /// </summary>
     public class PostgresDiscountDao : IDiscountDao
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PostgresDiscountDao() { }
 
+        /// <summary>
+        /// Lấy tất cả các discount
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rowsPerPage"></param>
+        /// <returns></returns>
         public Tuple<int, List<Discount>> GetAllDiscount(int page, int rowsPerPage)
         {
             var discounts = new List<Discount>();
@@ -53,6 +65,12 @@ namespace POS.Services.DAO
             return new Tuple<int, List<Discount>>(totalItems, discounts);
         }
 
+        /// <summary>
+        /// Thêm một discount mới
+        /// </summary>
+        /// <param name="discountCode"></param>
+        /// <param name="discountValue"></param>
+        /// <returns></returns>
         public int InsertDiscount(string discountCode, int discountValue)
         {
             int newId;
@@ -75,6 +93,10 @@ namespace POS.Services.DAO
             return newId;
         }
 
+        /// <summary>
+        /// Xóa một discount theo mã
+        /// </summary>
+        /// <param name="discountCode"></param>
         public void RemoveDiscountByCode(string discountCode)
         {
             using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace POS.Models
 {
+    /// <summary>
+    /// QuickPayResquest Model cho việc thanh toán nhanh Mono
+    /// </summary>
     public class QuickPayResquest
     {
         public string orderInfo { get; set; }

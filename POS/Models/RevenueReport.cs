@@ -2,6 +2,9 @@
 
 namespace POS.Models
 {
+    /// <summary>
+    /// RevenueReport Model
+    /// </summary>
     public class RevenueReport
     {
         public int ReportID { get; set; }

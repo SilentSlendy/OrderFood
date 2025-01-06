@@ -3,8 +3,10 @@
 using System.Runtime.CompilerServices;
 
 namespace POS.Models
-
 {
+    /// <summary>
+    /// Product Model
+    /// </summary>
     public class Product: INotifyPropertyChanged
     {
         private string name;
@@ -27,6 +29,10 @@ namespace POS.Models
         public string ImagePath { get; set; }
         public bool Status { get; set; } = true;
 
+        /// <summary>
+        /// Gán giá trị từ một Product khác
+        /// </summary>
+        /// <param name="source"></param>
         public void AssignFrom(Product source)
         {
             this.ProductID = source.ProductID;

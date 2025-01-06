@@ -2,6 +2,9 @@
 
 namespace POS.Models
 {
+    /// <summary>
+    /// PaymentModel class
+    /// </summary>
     public class PaymentModel : INotifyPropertyChanged
     {
         public int TotalBill { get; set; }

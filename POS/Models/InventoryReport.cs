@@ -2,6 +2,9 @@
 
 namespace POS.Models
 {
+    /// <summary>
+    /// Represents an inventory report.
+    /// </summary>
     public class InventoryReport
     {
         public int ReportID { get; set; }

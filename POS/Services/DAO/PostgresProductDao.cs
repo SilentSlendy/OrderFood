@@ -9,10 +9,25 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace POS.Services.DAO
 {
+    /// <summary>
+    /// DAO cho các thao tác liên quan đến Product
+    /// </summary>
     public class PostgresProductDao : IProductDao
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PostgresProductDao() { }
 
+        /// <summary>
+        /// Lấy tất cả các sản phẩm
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rowsPerPage"></param>
+        /// <param name="searchKeyword"></param>
+        /// <param name="categoryType"></param>
+        /// <param name="isPriceSort"></param>
+        /// <returns></returns>
         public Tuple<int, List<Product>> GetAllProducts(int page, int rowsPerPage, string searchKeyword, string categoryType, int isPriceSort)
         {
             var products = new List<Product>();
@@ -78,7 +93,11 @@ namespace POS.Services.DAO
             return new Tuple<int, List<Product>>(totalItems, products);
         }
 
-        // Thêm sản phẩm mới
+        /// <summary>
+        /// Thêm sản phẩm mới
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
         public int InsertProduct(Product product)
         {
             int newId;
@@ -105,7 +124,11 @@ namespace POS.Services.DAO
             return newId;
         }
 
-        // Cập nhật thông tin sản phẩm
+        /// <summary>
+        /// Cập nhật thông tin sản phẩm
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
         public bool UpdateProduct(Product product)
         {
             int rowsAffected;
@@ -144,7 +167,10 @@ namespace POS.Services.DAO
             return rowsAffected > 0;
         }
 
-        // Xóa sản phẩm theo Name
+        /// <summary>
+        /// Xóa một sản phẩm theo ID
+        /// </summary>
+        /// <param name="productId"></param>
         public void RemoveProductById(int productId)
         {
             using (var connection = new NpgsqlConnection(ConnectionHelper.BuildConnectionString()))
@@ -170,6 +196,11 @@ namespace POS.Services.DAO
             }
         }
 
+        /// <summary>
+        /// Tìm sản phẩm theo ID
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <returns></returns>
         public Product FindProductByID(int productID)
         {
             Product product = new Product();

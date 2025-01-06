@@ -11,11 +11,24 @@ using System.Net.Http;
 
 namespace POS.Helpers
 {
+    /// <summary>
+    /// Class PaymentRequest: Gửi request thanh toán đến MoMo
+    /// </summary>
     public class PaymentRequest
     {
+        /// <summary>
+        /// Khởi tạo một đối tượng PaymentRequest
+        /// </summary>
         public PaymentRequest()
         {
         }
+
+        /// <summary>
+        /// Hàm tạo chuỗi hash từ chuỗi dữ liệu
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <param name="postJsonString"></param>
+        /// <returns></returns>
         public static async Task<string> sendPaymentRequest(string endpoint, string postJsonString)
         {
             try
