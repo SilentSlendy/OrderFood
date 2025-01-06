@@ -76,13 +76,6 @@
                                     ToolTipService.ToolTip=""
                                     Icon="PhoneBook">
                 </NavigationViewItem>
-                <NavigationViewItem Content="Báo cáo"
-                                    Tag="POS.Views.BaoCao"
-                                    ToolTipService.ToolTip="">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE9F9;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
                 <NavigationViewItem Content="Thanh toán"
                                     Tag="POS.Views.NotPaidInvoicesView"
                                     ToolTipService.ToolTip="">
