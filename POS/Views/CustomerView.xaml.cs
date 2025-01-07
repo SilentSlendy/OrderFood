@@ -263,7 +263,7 @@ namespace POS.Views
                 var errorDialog = new ContentDialog
                 {
                     Title = "Lỗi",
-                    Content = "Vui lòng chọn nguyên liệu muốn xóa.",
+                    Content = "Vui lòng chọn khách hàng muốn xóa.",
                     CloseButtonText = "OK",
                     DefaultButton = ContentDialogButton.Close,
                     XamlRoot = this.XamlRoot // Bind to the current XamlRoot
@@ -277,7 +277,7 @@ namespace POS.Views
             var confirmDialog = new ContentDialog
             {
                 Title = "Xác nhận xóa",
-                Content = $"Bạn có chắc muốn xóa nguyên liệu '{ViewModel.SelectedCustomer.Name}'?",
+                Content = $"Bạn có chắc muốn xóa khách hàng '{ViewModel.SelectedCustomer.Name}'?",
                 PrimaryButtonText = "Hủy",
                 SecondaryButtonText = "Xóa",
                 DefaultButton = ContentDialogButton.Secondary,
@@ -298,7 +298,7 @@ namespace POS.Views
                     var errorDialog = new ContentDialog
                     {
                         Title = "Lỗi",
-                        Content = "Không thể xóa nguyên liệu. Vui lòng thử lại.",
+                        Content = "Không thể xóa khách hàng. Vui lòng thử lại.",
                         CloseButtonText = "OK",
                         DefaultButton = ContentDialogButton.Close,
                         XamlRoot = this.XamlRoot
@@ -355,7 +355,7 @@ namespace POS.Views
                     var errorDialog = new ContentDialog
                     {
                         Title = "Lỗi",
-                        Content = "Không thể xóa nguyên liệu. Vui lòng thử lại.",
+                        Content = "Không thể xóa khách hàng. Vui lòng thử lại.",
                         CloseButtonText = "OK",
                         DefaultButton = ContentDialogButton.Close,
                         XamlRoot = this.XamlRoot
