@@ -295,7 +295,7 @@ namespace POS.Views
                     var errorDialog = new ContentDialog
                     {
                         Title = "Lỗi",
-                        Content = "Không thể xóa nguyên liệu. Vui lòng thử lại.",
+                        Content = "Không thể xóa nhân viên. Vui lòng thử lại.",
                         CloseButtonText = "OK",
                         DefaultButton = ContentDialogButton.Close,
                         XamlRoot = this.XamlRoot
@@ -331,7 +331,7 @@ namespace POS.Views
             var confirmDialog = new ContentDialog
             {
                 Title = "Xác nhận xóa",
-                Content = $"Bạn có chắc muốn xóa nguyên liệu '{ViewModel.SelectedEmployee.Name}'?",
+                Content = $"Bạn có chắc muốn xóa nhân viên '{ViewModel.SelectedEmployee.Name}'?",
                 PrimaryButtonText = "Xóa",
                 CloseButtonText = "Hủy",
                 DefaultButton = ContentDialogButton.Close,
@@ -352,7 +352,7 @@ namespace POS.Views
                     var errorDialog = new ContentDialog
                     {
                         Title = "Lỗi",
-                        Content = "Không thể xóa nguyên liệu. Vui lòng thử lại.",
+                        Content = "Không thể xóa nhân viên. Vui lòng thử lại.",
                         CloseButtonText = "OK",
                         DefaultButton = ContentDialogButton.Close,
                         XamlRoot = this.XamlRoot
